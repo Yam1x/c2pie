@@ -76,10 +76,11 @@ jobs:
           python -m pip install -U pip pytest
         fi
 
-    - name: Run unit tests
+    - name: Run unit tests with coverage
       run: |
-        mkdir -p reports
-        poetry run pytest --ignore=test_application -m "not e2e" -q --junitxml=reports/junit.xml --maxfail=1
+        python -m pip install -q coverage pytest
+        poetry run coverage run -m pytest --ignore=test_application -m "not e2e" -q --maxfail=1
+        poetry run coverage xml -o coverage-unit.xml
 
     - name: Upload test report (JUnit)
       if: always()
@@ -143,8 +144,8 @@ jobs:
       run: |
         c2patool -V
 
-    - name: Run e2e tests
+    - name: Run e2e tests with coverage
       run: |
-        mkdir -p reports
-        echo pwd
-        poetry run pytest tests/c2pa/e2e_test.py
+        python -m pip install -q coverage pytest
+        poetry run coverage run -m pytest tests/c2pa/e2e_test.py -q
+        poetry run coverage xml -o coverage-e2e.xml

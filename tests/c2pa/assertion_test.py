@@ -35,7 +35,7 @@ def test_create_assertion_with_thumbnail_type():
 def test_assertion_cannot_create_with_no_type():
     test_assertion = Assertion(None, {})  # type: ignore
 
-    assert test_assertion.type not in C2PA_AssertionTypes
+    assert test_assertion.type not in list(C2PA_AssertionTypes)
     assert test_assertion.get_content_type() == b""
 
 

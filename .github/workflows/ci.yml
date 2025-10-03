@@ -1,12 +1,16 @@
-name: Lint
+name: CI
 
 on:
   push:
     branches:
-      - '**'
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   pull_request:
-    branches:
-      - '**'
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 
 permissions:
   contents: read
@@ -20,132 +24,208 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip'
 
-      - name: Install ruff
-        run: python -m pip install ruff
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 'latest'
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-ruff-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --only dev
 
       - name: Ruff version
-        run: ruff --version
+        run: poetry run ruff --version
 
       - name: Check formatting
-        run: ruff format --check .
+        run: poetry run ruff format --check .
 
       - name: Lint (GitHub Annotations)
-        run: ruff check --output-format=github .
+        run: poetry run ruff check --output-format=github .
 
   run-unit-tests:
-  name: Run unit tests using matrix
-  strategy: 
-    fail-fast: false
-    matrix:
-      os: [ubuntu-latest, macos-latest, windows-latest]
-      python-version: ["3.9","3.10","3.11","3.12","pypy-3.10"]
+    name: Run unit tests using matrix
+    needs: ruff
+    strategy: 
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.9","3.10","3.11","3.12","pypy-3.10"]
 
-  runs-on: ${{ matrix.os }}
-  timeout-minutes: 30
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
 
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        version: 'latest'
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 'latest'
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-    - name: Run Poetry install
-      run: |
-        poetry install --no-interaction --no-ansi
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-unit-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
-    - name: Ensure pytest is available
-      run: |
-        if ! command -v pytest >/dev/null 2>&1; then
-          python -m pip install -U pip pytest
-        fi
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction
 
-    - name: Run unit tests with coverage
-      run: |
-        python -m pip install -q coverage pytest
-        poetry run coverage run -m pytest --ignore=test_application -m "not e2e" -q --maxfail=1
-        poetry run coverage xml -o coverage-unit.xml
-
-    - name: Upload test report (JUnit)
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: junit-${{ github.sha }}
-        path: reports/junit.xml
+      - name: Run unit tests with coverage
+        run: |
+          poetry run pytest \
+            --cov=c2pie \
+            --cov-report=xml:coverage-unit.xml \
+            -m "not e2e" \
+            --maxfail=1 \
+            -v
+      
+      - name: Upload coverage artifact
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-unit
+          path: |
+            coverage-unit.xml
+            .coverage
 
   run-e2e-tests:
-  name: Run e2e tests
-  runs-on: [self-hosted, Linux, X64]
-  timeout-minutes: 30
-
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+    name: Run e2e tests
+    needs: ruff
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 30
     
-    - uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        version: 'latest'
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 'latest'
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-    - name: Run Poetry install
-      run: |
-        poetry install --no-interaction --no-ansi
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-e2e-tests-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
-    - name: Ensure pytest is available
-      run: |
-        if ! command -v pytest >/dev/null 2>&1; then
-          python -m pip install -U pip pytest
-        fi
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction
 
-    - name: Cache Rust and Cargo dependencies
-      id: cache-rust
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.rustup
-          ~/.cargo
-        key: ${{ runner.os }}-rust-
-        restore-keys: |
-          ${{ runner.os }}-rust-
+      - name: Cache Rust and Cargo dependencies
+        id: cache-rust
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.rustup
+            ~/.cargo
+          key: ${{ runner.os }}-rust-
+          restore-keys: |
+            ${{ runner.os }}-rust-
 
-    - name: Install Rust toolchain and c2patool
-      if: steps.cache-rust.outputs.cache-hit != 'true'
-      run: |
-        curl -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
-        . "$HOME/.cargo/env"
-        cargo install c2patool --locked
+      - name: Install Rust toolchain and c2patool
+        if: steps.cache-rust.outputs.cache-hit != 'true'
+        run: |
+          curl -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+          . "$HOME/.cargo/env"
+          cargo install c2patool --locked
 
-    - name: Add cargo to PATH
-      run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      - name: Add cargo to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-    - name: Verify if c2patool is installed 
-      run: |
-        c2patool -V
+      - name: Verify if c2patool is installed 
+        run: |
+          c2patool -V
 
-    - name: Run e2e tests with coverage
-      run: |
-        python -m pip install -q coverage pytest
-        poetry run coverage run -m pytest tests/c2pa/e2e_test.py -q
-        poetry run coverage xml -o coverage-e2e.xml
+      - name: Run e2e tests with coverage
+        run: |
+          poetry run pytest tests/c2pa/e2e_test.py \
+            --cov=c2pie \
+            --cov-report=xml:coverage-e2e.xml \
+            -v
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-e2e
+          path: |
+            coverage-e2e.xml
+            .coverage
+
+  combine-coverage:
+    name: Combine coverage and upload to Codecov
+    needs: [run-unit-tests, run-e2e-tests]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install coverage
+        run: python -m pip install coverage[toml]
+
+      - name: Download unit coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-unit
+          path: ./coverage-unit
+
+      - name: Download e2e coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-e2e
+          path: ./coverage-e2e
+
+      - name: Combine coverage reports
+        run: |
+          coverage combine ./coverage-unit/.coverage ./coverage-e2e/.coverage
+          coverage xml -o coverage-combined.xml
+          coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
+          coverage report
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage-combined.xml
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      # ![Coverage](https://codecov.io/gh/TourmalineCore/c2pie/branch/master/graph/badge.svg)

@@ -1,130 +1,108 @@
-c2pie
-===
+<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/c2pie-logo-for-dark-mode.svg"> 
+    <source media="(prefers-color-scheme: light)" srcset="docs/images/c2pie-logo-for-light-mode.svg">
+    <img xsalt="с2pie Logo" src="docs/images/c2pie-logo-for-light-mode.svg" style="width: 50%;">
+</picture>
+
+-------
+
 [![Unit Tests](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/run_unit_tests.yml/badge.svg)](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/run_unit_tests.yml)
 [![Lint](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/lint.yml/badge.svg)](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/lint.yml)
 
----
+<br>
 
-**C2PIE** is an open‑source Python library for constructing C2PA Content Credentials manifests that validate with `c2patool` and common C2PA consumers. It supports building claims, assertions, and COSE signatures and embedding the manifest store into JPEG (APP11) and PDF (incremental update) assets.
+**c2pie** is an open‑source Python library for constructing [C2PA](https://c2pa.org/) Content Credentials manifests that validate with [`c2patool`](https://github.com/contentauth/c2pa-rs) and other common C2PA consumers. 
 
-- C2PA spec: https://c2pa.org/  
-- Validation: https://github.com/contentauth/c2pa-rs (`c2patool`)
+The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPEG and PDF files. 
+
+For more detailed feature specification, please look at the [Features](#-features) section.
 
 > ⚠️ This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly.
 
+## Table of Content
++ [🥧 Quick start](#-quick-start)
+  + [Prerequisites](#prerequisites)
+  + [Usage](#usage)
+    + [Command Line Interface](#command-line-interface)
+    + [Code](#code)
+    + [Validation](#validation)
++ [🥧 For developers](#-for-developers)
+  + [First steps](#first-steps)
+    + [Using Dev Containers](#using-dev-containers)
+    + [Using a Local Environment](#using-a-local-environment)
+  + [Run test applications](#run-test-applications)
+  + [Run tests](#run-tests)
+  + [Lint \& format](#lint--format)
+  + [CI](#ci)
++ [🥧 Features](#-features)
+  + [Workflow of test applications](#workflow-of-test-applications)
+  + [Notes for PDF vs JPEG](#notes-for-pdf-vs-jpeg)
++ [🥧 Certificates](#-certificates)
+  + [Generating your own mock credentials](#generating-your-own-mock-credentials)
+  + [Getting credentials for production](#getting-credentials-for-production)
++ [🥧 Relevant links](#-relevant-links)
++ [🥧 Contributing](#-contributing)
++ [🥧 License](#-license)
 
-## Features
+<br>
 
-🥧 C2PA Claim (`c2pa.claim`) with canonical CBOR, `dc:format`, `alg`, and hashed‑URIs for assertions.
-
-🥧 C2PA Signature (`c2pa.signature`) using COSE_Sign1 (PS256) with detached payload and `x5chain` in protected header.
-
-🥧 Assertion Store with common assertions (e.g., `c2pa.hash.data` hard‑binding, schema.org CreativeWork, etc.).
-
-🥧 Embedding
-  - JPEG via APP11 segments (size‑driven iterative layout).
-  - PDF via incremental update at EOF (xref/trailer preserved; `/AF` + `/Names/EmbeddedFiles`).  
-
-🥧 Validation with `c2patool` (structure + signatures).
+# 🥧 Quick start
 
 
+## Prerequisites
 
-## Quick start
-
-### Prerequisites
----
-1) Python environment. Currently supported Python versions: 3.9 - 3.12
-2) Private key and certificate chain pair. 
+1) Python environment. Currently supported Python versions: 3.9 - 3.13
+2) Private key and certificate chain pair
 3) Key and certificate filepaths exported into the current environment with:
-```bash
-export C2PIE_KEY_FILEPATH=path/to/your/private/key/file
-export C2PIE_CERT_FILEPATH=path/to/your/certificate/chain/file
-```
+    ```bash
+    export C2PIE_KEY_FILEPATH=path/to/your/private/key/file
+    export C2PIE_CERT_FILEPATH=path/to/your/certificate/chain/file
+    ```
+4) Install c2pie package by running this command from the current environment:
 
-### Usage
----
+    ```bash
+    pip install c2pie
+    ```
 
-#### 1) Install c2pie package
 
-Run from Python shell terminal:
-```bash
-pip install c2pie
-```
+## Usage
 
-#### 2) Run the following command to sign an input .jpg or .pdf:
-```bash
-c2pie-sign --input-file path/to/input/file
+
+### Command Line Interface
+
+You can run the following command to sign an input JPG/JPEG or PDF file:
+```python
+c2pie sign --input_file path/to/input_file
 ```
 
 By default, signed file will be saved to the same directory as the input file with the *signed_* prefix. 
 To explicitly set output path, use:
-```bash
-c2pie-sign --input-file path/to/input_file --output-file path/to/output/file
+```python
+c2pie sign --input_file path/to/input_file --output_file path/to/output/file
 ```
 
+### Code
 
+To sign a file and save the output to the same directory:
 
-## For developers
+```python
+from c2pie.signing import sign_file
 
-First of all, clone and (optionally) use Dev Containers:
-
-1. Install Docker and VS Code “Dev Containers” extension.  
-2. Open the repo in VS Code and Reopen in Container. The container installs Python, your package in editable mode, and configures Ruff which provided linting and formatting on save.
-
-> Dev container also sets Ruff as default formatter and enables auto-fixing on save (see `.devcontainer/devcontainer.json`).
-
-
-### Run tests
-
-Run from terminal:
-```bash
-pytest
+input_file_path = "path/to/file"
+sign_file(input_path=input_file_path)
 ```
 
-Or use the VC Code task `Run unit tests`
+To set a custom output path:
+```python
+from c2pie.signing import sign_file
 
-Or if you'd like to get info on test coverage, use:
-```bash
-pytest --cov
+input_file_path = "path/to/file"
+output_file_path = "path/to/another/file/"
+sign_file(input_path=input_file_path, output_path=output_file_path)
 ```
-
-### Lint & format
-
-```bash
-# check formatting & linting
-ruff format --check .
-ruff check .
-
-# apply fixes
-ruff format .
-ruff check . --fix
-```
-
-### Try the example apps
-
-
-To run test applications, you need to fill out TEST_PDF_PATH and/or TEST_IMAGE_PATH in values in *.env*. Test scripts use these filepaths as input files for signing.
-
-Also make sure that you have test certificate chain and public key in `tests/credentials`. They should be there by default if you've cloned the repository. If needed, you can change their filepaths in *.env* as well.
-
-
-Use the VC Code task `Build package`
-
-Use the VC Code task `Run JPEG test application` or `Run PDF test application`
-
-
-### Example apps workflow
-
-
-1) Load a sample asset (`tests/test_files/test_image.jpg` or `tests/test_files/test_document.pdf`);
-2) Build a manifest:
-   - `TC_C2PA_GenerateAssertion`
-   - `TC_C2PA_GenerateHashDataAssertion`
-   - `TC_C2PA_GenerateManifest` 
-3) Embed the manifest (`TC_C2PA_EmplaceManifest`);  
-4) Write a new asset with C2PA.
 
 ### Validation
+
 
 Output files can be validated with:
 ```bash
@@ -132,97 +110,198 @@ c2patool path/to/your_output.jpg
 c2patool path/to/your_output.pdf
 ```
 
+<br>
+
+# 🥧 For developers
+
+## First steps
+
+To contribute to the c2pie package development, you can use one of the following approaches after cloning the repository.
+
+### Using Dev Containers
+1. Make sure you have installed Docker and [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) extension for VS code.
+
+2. Open the repo in VS Code and Reopen in Container. The container installs Python, Poetry, the package in editable mode, and configures Ruff as a default formatter, which provides linting and formatting and enables auto-fixing files on save (see `.devcontainer/devcontainer.json`).
+
+### Using a Local Environment
+
+>We strongly recommend using Dev Containers in order to automatically create an isolated Python environment with all dependencies installed, environment variables exported and some helpful development tools included.
 
 
-## API overview (high‑level)
+1. Make sure the environment you're currently in has Python and Poetry installed and their versions meet the requirements of the project. You can verify that by running:
 
-```python
-from c2pie.interface import (
-    TC_C2PA_GenerateAssertion,
-    TC_C2PA_GenerateHashDataAssertion,
-    TC_C2PA_GenerateManifest,
-    TC_C2PA_EmplaceManifest,
-    C2PA_AssertionTypes,
-    C2PA_ContentTypes,
-)
+    ```bash
+    python --version
+    poetry --version
+    ```
 
-# 1) Assertions
-creative_work = TC_C2PA_GenerateAssertion(
-    C2PA_AssertionTypes.creative_work,
-    {
-        "@context": "https://schema.org",
-        "@type": "CreativeWork",
-        "author": [{"@type": "Person", "name": "Example Author"}],
-    },
-)
+2. Go to the repository's folder in terminal and run:
+    ```bash
+    poetry install
+    ```
+    This will automatically create and activate a poetry shell with project's dependencies installed.
 
-# Hard‑binding (exclusion starts at original EOF for PDF, or APP11 insert offset for JPEG)
-hash_data = TC_C2PA_GenerateHashDataAssertion(
-    cai_offset=<offset>,
-    hashed_data=<sha256_of_original_asset_bytes>,
-)
 
-# 2) Manifest (claim + signature + assertion store)
-with open("tests/credentials/ps256.pem", "rb") as f:
-    private_key = f.read()  # PKCS#8 PEM (RSA PSS)
+3. To run any Python command related to the project's dependencies, remember to add `poetry run` in front of the command. For example:
+    ```bash
+    poetry run c2pie sign --input_file tests/test_files/test_doc.pdf
+    
+    poetry run ruff check
+    ```
 
-with open("tests/credentials/ps256.pub", "rb") as f:
-    cert_chain = f.read()   # PEM bundle (leaf + intermediates)
+    > Commands in further sections don't include `poetry run` by default as they are intended to be run from a Dev Container. 
 
-manifest_store = TC_C2PA_GenerateManifest(
-    assertions=[creative_work, hash_data],
-    private_key=private_key,
-    certificate_chain=cert_chain,
-)
 
-# 3) Embed
-result_bytes = TC_C2PA_EmplaceManifest(
-    C2PA_ContentTypes.pdf,  # or C2PA_ContentTypes.jpg
-    content_bytes=<bytes_of_original_asset>,
-    c2pa_offset=<offset>,   # for JPEG: insert offset; for PDF: len(original_bytes)
-    manifests=manifest_store,
-)
+## Run test applications
+
+To run test applications, you need to fill out `TEST_PDF_PATH` and/or `TEST_IMAGE_PATH` in values in *.env*. Test scripts use these filepaths as input files for signing.
+
+Also make sure that you have test certificate chain and public key in `tests/credentials`. They should be there by default if you've cloned the repository. If needed, you can change their filepaths in *.env* as well.
+
+
+You can test the signing workflow with the following VS Code tasks:
+
+🔸 `Run JPEG test application` 
+
+🔸 `Run PDF test application`
+
+## Run tests
+
+Run from terminal:
+```bash
+pytest
 ```
 
-### Notes for PDF vs JPEG
+Or use the VC Code task `Run unit tests`. Note that the task excludes the e2e test. 
 
-🥧  **PDF**: we append an incremental update. The `c2pa.hash.data` exclusion starts at `len(original_pdf)` and its length equals the final tail size (computed iteratively).  
+Or if you'd like to get info on test coverage, use:
+```bash
+pytest --cov
+```
 
-🥧  **JPEG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
+## Lint & format
+
+You can check if there are any issues to deal with them manually:
+
+```bash
+ruff format --check .
+ruff check .
+```
+
+Or check and automatically fix where possible:
+```bash
+ruff format .
+ruff check . --fix
+```
+
+The latter option is also available via the VC Code task `Lint and Format`
+
+## CI
+
+#TODO
+
+<br>
+
+# 🥧 Features
+
+🔸 C2PA Claim (`c2pa.claim`) with canonical CBOR, `dc:format`, `alg`, and hashed‑URIs for assertions.
+
+🔸 C2PA Signature (`c2pa.signature`) using COSE_Sign1 (PS256) with detached payload and `x5chain` in protected header.
+
+🔸 Assertion Store with common assertions (e.g., `c2pa.hash.data` hard‑binding, schema.org CreativeWork, etc.).
+
+🔸 Embedding
+  - JPEG via APP11 segments (size‑driven iterative layout).
+  - PDF via incremental update at EOF (xref/trailer preserved; `/AF` + `/Names/EmbeddedFiles`).  
+
+🔸 Validation with `c2patool` (structure + signatures).
+
+## Workflow of test applications
+
+1) Load a sample asset (`tests/test_files/..`);
+
+2) Build a manifest with `c2pie_GenerateAssertion`, `c2pie_GenerateHashDataAssertion`, `c2pie_GenerateManifest` 
+
+3) Embed the manifest (`c2pie_EmplaceManifest`);  
+
+4) Write a new asset with C2PA.
+
+## Notes for PDF vs JPEG
+
+🔸 **PDF**: we append an incremental update. The `c2pa.hash.data` exclusion starts at `len(original_pdf)` and its length equals the final tail size (computed iteratively).  
+
+🔸 **JPEG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
 
 The library takes care of iterative sizing so the `c2pa.hash.data` matches exactly, otherwise validators return `assertion.dataHash.mismatch`.
 
+<br>
 
-## CI: build, lint, and tests
+# 🥧 Certificates
 
-We ship three GitHub Actions (see `.github/workflows/`):
+Example certificate and key are located in `tests/credentials`. They are suitable for development only ⚠️
 
-- **Build Image** (`build_image.yml`): build & tests on Python 3.8/3.10/3.12.  
-- **Lint** (`lint.yml`): Ruff lint + format checks.  
-- **Run unit_tests** (`run_unit_tests.yml`): containerized unit tests.
+## Generating your own mock credentials
+
+You can generate your own mock credentials for testing and developing the package follow these steps:
+
+1. Generate a private key:
+    ```bash
+    openssl genrsa -out credentials/<private-key-filename>.pem 2048
+    ```
+
+2. Generate a Certificate Signing Request (CSR):
+    ```bash
+    openssl req -new \
+    -key credentials/<private-key-filename>.pem \
+    -out csr.pem
+    ```
+
+3. Generate a Self-Signed Certificate:
+    ```bash
+    openssl x509 -req -days 365 \
+    -in csr.pem \
+    -signkey  credentials/<private-key-filename>.pem \
+    -out credentials/<certificate-filename>.pem
+    ```
+> ⚠️ Remember to update environment variables to use your newly generated credentials.
+
+> You can change certificate's validity period with --days option at the last step.
+
+> Certificate Signing Request file (*csr.pem*) can be deleted after the certificate has been generated.
 
 
-## Certificates & trust
+## Getting credentials for production
 
-Example keys are located in `tests/credentials`. They are suitable for development only.  
+🔸 Use a real document‑signing certificate (RSA‑PSS or ECDSA per C2PA);
 
-For production:
-  - use a real document‑signing certificate (RSA‑PSS or ECDSA per C2PA),  
-  - provide a leaf + intermediates bundle (no root),  
-  - configure trust anchors/allow‑lists in your validator environment. 
+🔸 Provide a leaf + intermediates bundle (no root);  
 
+🔸 Configure trust anchors/allow‑lists in your validator environment. 
 
-## Contributing
+For detailed information on signing and certificates please explore the [corresponding section in the Content Authenticity Initiative (CAI) documentation](https://opensource.contentauthenticity.org/docs/signing/).
 
-🥧  Use Conventional Commits (e.g., `feat:`, `fix:`, `style(ruff):`, `ci:`).  
+<br>
 
-🥧  Run `ruff format` + `ruff check --fix` before committing.  
+# 🥧 Relevant links
+∗ [CAI documentation](https://opensource.contentauthenticity.org/docs)
 
-🥧  Add unit tests for new behavior.
+∗ [C2PA spec](https://c2pa.org/)  
 
----
+∗ [c2patool for validation](https://github.com/contentauth/c2pa-rs)
 
-## License
+<br>
 
-MIT License. See [c2pie repository's license](LICENSE) for more information.
+# 🥧 Contributing
+
+🔸 Use Conventional Commits (e.g., `feat:`, `fix:`, `style(ruff):`, `ci:`).  
+
+🔸 Run `Lint and Format` task before committing.  
+
+🔸 Add unit tests for new behavior.
+
+<br>
+
+# 🥧 License
+
+Apache License. See [c2pie repository's license](LICENSE) for more information.
 

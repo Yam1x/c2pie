@@ -103,7 +103,7 @@ jobs:
             -v
       
       - name: Upload coverage artifact
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        if: (matrix.os == 'ubuntu-latest' || matrix.os == 'Lunux') && matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-unit
@@ -144,7 +144,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-e2e-tests-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-e2e-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -184,8 +184,9 @@ jobs:
         env:
           C2PIE_KEY_FILEPATH: ${{ vars.C2PIE_KEY_FILEPATH }}
           C2PIE_CERT_FILEPATH: ${{ vars.C2PIE_CERT_FILEPATH }}
-          
+
       - name: Upload coverage artifact
+        if: (matrix.os == 'ubuntu-latest' || matrix.os == 'Lunux') && matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-e2e

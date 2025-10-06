@@ -177,8 +177,8 @@ jobs:
 
       - name: Export variables for testing into the environment
         run: |
-          export $(cat .env | xargs)
-          
+          export $(cat .env-example | xargs)
+
       - name: Run e2e tests with coverage
         run: |
           poetry run pytest tests/c2pa/e2e_test.py \

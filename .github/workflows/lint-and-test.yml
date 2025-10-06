@@ -175,6 +175,10 @@ jobs:
         run: |
           c2patool -V
 
+      - name: Export variables for testing into the environment
+        run: |
+          export $(cat .env | xargs)
+          
       - name: Run e2e tests with coverage
         run: |
           poetry run pytest tests/c2pa/e2e_test.py \

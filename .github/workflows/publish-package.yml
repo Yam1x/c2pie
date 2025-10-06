@@ -1,7 +1,8 @@
-name: 
+name: Package Publishing
 
 on:
-  push:
+  release:
+    types: [created]
 
 permissions:
   contents: read
@@ -13,7 +14,8 @@ concurrency:
 
 jobs:
   linting-and-testing:
-      uses: ./.github/workflows/lint-and-test.yml
+    name: Linting and Testing
+    uses: ./.github/workflows/lint-and-test.yml
   package-publishing:
     name: Build and Publish Package
     if: startsWith(github.event.ref, 'refs/tags/v')

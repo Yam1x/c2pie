@@ -175,17 +175,16 @@ jobs:
         run: |
           c2patool -V
 
-      - name: Export variables for testing into the environment
-        run: |
-          export $(cat .env-example | xargs)
-
       - name: Run e2e tests with coverage
         run: |
           poetry run pytest tests/c2pa/e2e_test.py \
             --cov=c2pie \
             --cov-report=xml:coverage-e2e.xml \
             -v
-
+        env:
+          C2PIE_KEY_FILEPATH: ${{ vars.C2PIE_KEY_FILEPATH }}
+          C2PIE_CERT_FILEPATH: ${{ vars.C2PIE_CERT_FILEPATH }}
+          
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:

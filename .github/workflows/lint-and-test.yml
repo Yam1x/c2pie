@@ -103,7 +103,7 @@ jobs:
             -v
       
       - name: Upload coverage artifact
-        if: (matrix.os == 'ubuntu-latest' || matrix.os == 'Lunux') && matrix.python-version == '3.12'
+        if: (matrix.os == 'ubuntu-latest' || runner.os == 'Lunux') && matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-unit
@@ -186,7 +186,7 @@ jobs:
           C2PIE_CERT_FILEPATH: ${{ vars.C2PIE_CERT_FILEPATH }}
 
       - name: Upload coverage artifact
-        if: (matrix.os == 'ubuntu-latest' || runner.os == 'Lunux') && matrix.python-version == '3.12'
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12' || runner.os == 'Linux' && matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-e2e

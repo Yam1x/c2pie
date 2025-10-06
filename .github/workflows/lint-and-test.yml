@@ -87,7 +87,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-unit-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-e2e-tests-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         run: poetry install --no-interaction
@@ -127,6 +127,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
       
+      - name: Set up Python
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}

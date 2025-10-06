@@ -7,6 +7,10 @@ permissions:
   contents: read
   packages: read
 
+concurrency:
+  group: publishing-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   linting-and-testing:
       uses: ./.github/workflows/lint-and-test.yml

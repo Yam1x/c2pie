@@ -9,7 +9,7 @@ on:
     paths-ignore:
       - '**.md'
       - 'docs/**'
-  on: [workflow_call] 
+  workflow_call:
 
 permissions:
   contents: read

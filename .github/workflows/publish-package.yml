@@ -1,0 +1,52 @@
+name: 
+
+on:
+  push:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  linting-and-testing:
+      uses: ./.github/workflows/lint-and-test.yml
+  package-publishing:
+    name: Build and Publish Package
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    needs: linting-and-testing
+
+    strategy: 
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 'latest'
+
+      - name: Run Poetry install
+        run: |
+          poetry lock && poetry install --no-interaction --no-ansi
+
+      - name: Configure Repository Credentials
+        run: |
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+
+      - name: Build and Publish the Package        
+        run: |
+          poetry publish --build

@@ -1,4 +1,4 @@
-name: CI
+name: Linting and Testing
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - '**.md'
       - 'docs/**'
+  on: [workflow_call] 
 
 permissions:
   contents: read
@@ -21,7 +22,7 @@ concurrency:
 jobs:
   ruff:
     name: Linting and Formatting
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -65,7 +66,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.9","3.10","3.11","3.12","pypy-3.10"]
+        python-version: ["3.9","3.10","3.11","3.12","3.13"]
 
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -118,7 +119,15 @@ jobs:
   run-e2e-tests:
     name: Run e2e tests
     needs: ruff
-    runs-on: [self-hosted, Linux, X64]
+
+    strategy: 
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10","3.11","3.12","3.13"]
+
+    runs-on: ${{ matrix.os }}
+    # runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 30
     
     steps:
@@ -190,7 +199,7 @@ jobs:
   combine-coverage:
     name: Combine coverage and upload to Codecov
     needs: [run-unit-tests, run-e2e-tests]
-    runs-on: ubuntu-latest
+    runs-on:  [self-hosted, Linux, X64]
     
     steps:
       - name: Checkout repository
@@ -231,47 +240,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       # ![Coverage](https://codecov.io/gh/TourmalineCore/c2pie/branch/master/graph/badge.svg)
-
-  package-publishing:
-    name: Build and Publish Package
-    if: startsWith(github.event.ref, 'refs/tags/v')
-    needs: [
-      run-unit-tests, 
-      run-e2e-tests,
-    ]
-    strategy: 
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
-
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 'latest'
-
-      - name: Run Poetry install
-        run: |
-          poetry lock && poetry install --no-interaction --no-ansi
-
-      - name: Configure Repository Credentials
-        run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-
-      - name: Build and Publish the Package        
-        run: |
-          poetry publish --build
   

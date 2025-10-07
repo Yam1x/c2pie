@@ -36,7 +36,7 @@ Issues = "https://github.com/TourmalineCore/c2pie/issues"
 c2pie = 'c2pie.main:main'
 
 [tool.poetry.dependencies]
-python = "^3.9,<3.14"
+python = "^3.9"
 cbor2 = "^5.6.3"
 cryptography = "^42.0.5"
 pytz = "^2024.1"

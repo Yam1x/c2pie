@@ -103,11 +103,15 @@ Follow the steps:
         "validation_state": "Valid" 
     }
     ```
-    
+
 You can also set up a Jupyter Lab environment and test c2pie there by running:
 ```bash
 docker compose up c2pie-notebooks
 ```
+
+After running this command you should be able to access Jupyter Lab at `localhost:8888` from your browser.
+
+The existing `notebooks` directory already contains an example notebook with commands to test signing functionality. 
 
 ## Running from your own environment
 

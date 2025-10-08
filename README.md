@@ -15,16 +15,22 @@
 
 The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPEG and PDF files. 
 
+>**Supported file extensions**: JPG, PDF
+
+>**Supported Python versions**: 3.9 - 3.14
+
 For more detailed feature specification, please look at the [Features](#-features) section.
 
 > ⚠️ This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly.
 
-## Table of Content
+## Table of Contents
 + [🥧 Quick start](#-quick-start)
-  + [Prerequisites](#prerequisites)
-  + [Usage](#usage)
-    + [Command Line Interface](#command-line-interface)
-    + [Code](#code)
+  + [Running example apps with Docker Compose](#running-example-apps-with-docker-compose)
+  + [Running from your own environment](#running-from-your-own-environment)
+    + [Prerequisites](#prerequisites)
+    + [Usage](#usage)
+      + [Command Line Interface](#command-line-interface)
+      + [Code](#code)
     + [Validation](#validation)
 + [🥧 For developers](#-for-developers)
   + [First steps](#first-steps)
@@ -33,7 +39,6 @@ For more detailed feature specification, please look at the [Features](#-feature
   + [Run test applications](#run-test-applications)
   + [Run tests](#run-tests)
   + [Lint \& format](#lint--format)
-  + [CI](#ci)
 + [🥧 Features](#-features)
   + [Workflow of test applications](#workflow-of-test-applications)
   + [Notes for PDF vs JPEG](#notes-for-pdf-vs-jpeg)
@@ -48,40 +53,106 @@ For more detailed feature specification, please look at the [Features](#-feature
 
 # 🥧 Quick start
 
+## Running example apps with Docker Compose
 
-## Prerequisites
+For a quick test of c2pie's functionality with pre-prepared environment, test files and credentials, you can run our example apps.
+> ⚠️ Docker is essential for running example apps.
 
-1) Python environment. Currently supported Python versions: 3.9 - 3.13
-2) Private key and certificate chain pair
+Follow the steps:
+
+1. Clone the c2pie repository.
+
+2. Go to `example_app` directory:
+    ```bash
+    cd example_app
+    ```
+
+3. To test signing a JPG file, run:
+    ```bash
+    docker compose up c2pie-test-signing-jpg
+    ```
+  
+   To test signing a PDF file, run:
+    ```bash
+    docker compose up c2pie-test-signing-pdf
+    ```
+
+    After running either of these commands, you'll see a resulting signed file appear in `example_app/test_files` directory with a `signed-` prefix and a corresponding message with c2patool validation results in your terminal like this:
+    
+    ```bash
+    Successfully signed the file test_files/test_image.jpg!
+    The result was saved to test_files/signed_test_image.jpg. 
+    c2patool_validation_results:
+    {
+        "active_manifest": "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9",
+        "manifests": {
+        "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9": {
+            "claim_generator": "c2pie",
+        ................
+    },
+    "validation_results": {
+        "activeManifest": {
+        "success": [
+            {
+                "code": "claimSignature.insideValidity",
+                "url": "self#jumbf=/c2pa/urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
+                "explanation": "claim signature valid"
+            },
+        ................
+        },
+        "validation_state": "Valid" 
+    }
+    ```
+    
+You can also set up a Jupyter Lab environment and test c2pie there by running:
+```bash
+docker compose up c2pie-notebooks
+```
+
+## Running from your own environment
+
+### Prerequisites
+
+1) Python environment. Currently supported Python versions: 3.9 - 3.14. 
+2) Private key and certificate chain pair. You can go to [Certificates](#-certificates) for instructions on how to generate one.
+
+    The repo contains pre-generated mock credentials in `tests/credentials`. You can use them for a quick start.
+
 3) Key and certificate filepaths exported into the current environment with:
     ```bash
-    export C2PIE_KEY_FILEPATH=path/to/your/private/key/file
-    export C2PIE_CERT_FILEPATH=path/to/your/certificate/chain/file
+    export C2PIE_KEY_FILEPATH=<path/to/private_key_file>
+    export C2PIE_CERT_FILEPATH=<path/to/certificate_chain_file>
     ```
-4) Install c2pie package by running this command from the current environment:
+
+4) c2pie package installed in your current environment:
 
     ```bash
     pip install c2pie
     ```
 
 
-## Usage
+### Usage
 
+#### Command Line Interface
 
-### Command Line Interface
-
-You can run the following command to sign an input JPG/JPEG or PDF file:
+You can run the following command to sign an input JPG or PDF file:
 ```python
-c2pie sign --input_file path/to/input_file
+c2pie sign --input_file <path/to/input_file>
 ```
 
 By default, signed file will be saved to the same directory as the input file with the *signed_* prefix. 
 To explicitly set output path, use:
 ```python
-c2pie sign --input_file path/to/input_file --output_file path/to/output/file
+c2pie sign --input_file <path/to/input_file> --output_file <path/to/output_file>
 ```
 
-### Code
+If the file has been successfully signed, you'll see a message like this: 
+```bash
+Successfully signed the file tests/test_files/test_doc.pdf!
+The result was saved to tests/test_files/signed_test_doc.pdf.
+```
+
+#### Code
 
 To sign a file and save the output to the same directory:
 
@@ -101,6 +172,12 @@ output_file_path = "path/to/another/file/"
 sign_file(input_path=input_file_path, output_path=output_file_path)
 ```
 
+If the file has been successfully signed, you'll see a message like this: 
+```bash
+Successfully signed the file tests/test_files/test_doc.pdf!
+The result was saved to tests/test_files/signed_test_doc.pdf.
+```
+
 ### Validation
 
 
@@ -108,6 +185,30 @@ Output files can be validated with:
 ```bash
 c2patool path/to/your_output.jpg
 c2patool path/to/your_output.pdf
+```
+
+If the file has been correctly signed and validation is successful, the results you'll see in the terminal will look similar to this:
+```bash
+c2patool_validation_results:
+{
+    "active_manifest": "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9",
+    "manifests": {
+    "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9": {
+        "claim_generator": "c2pie",
+    ................
+},
+"validation_results": {
+    "activeManifest": {
+    "success": [
+        {
+            "code": "claimSignature.insideValidity",
+            "url": "self#jumbf=/c2pa/urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
+            "explanation": "claim signature valid"
+        },
+    ................
+    },
+    "validation_state": "Valid" 
+}
 ```
 
 <br>
@@ -195,10 +296,6 @@ ruff check . --fix
 ```
 
 The latter option is also available via the VC Code task `Lint and Format`
-
-## CI
-
-#TODO
 
 <br>
 

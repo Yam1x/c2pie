@@ -15,9 +15,9 @@
 
 The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPEG and PDF files. 
 
->**Supported file extensions**: JPG, PDF
+🔸 **Supported file extensions**: `JPG`, `PDF`
 
->**Supported Python versions**: 3.9 - 3.14
+🔸 **Supported Python versions**: `3.9 - 3.14`
 
 For more detailed feature specification, please look at the [Features](#-features) section.
 

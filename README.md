@@ -32,6 +32,8 @@ For more detailed feature specification, please look at the [Features](#-feature
       + [Command Line Interface](#command-line-interface)
       + [Code](#code)
     + [Validation](#validation)
+      + [c2patool](#c2patool)
+      + [C2PA Verify Tool](#c2pa-verify-tool)
 + [🥧 For developers](#-for-developers)
   + [First steps](#first-steps)
     + [Using Dev Containers](#using-dev-containers)

@@ -184,6 +184,7 @@ The result was saved to tests/test_files/signed_test_doc.pdf.
 
 ### Validation
 
+#### c2patool 
 
 Output files can be validated with:
 ```bash
@@ -214,6 +215,18 @@ c2patool_validation_results:
     "validation_state": "Valid" 
 }
 ```
+
+#### C2PA Verify Tool
+
+You can also verify signed files on [Verify platform](https://contentcredentials.org/verify).
+
+Simply upload the file you'd like to verify.
+
+⚠️ NOTE: Files embedded with self-signed certificates (like the ones this repository contains) **won't be verified**. You'll get the following message:
+```
+The Content Credential issuer couldn’t be recognized. This file may not come from where it claims to.
+```
+
 
 <br>
 

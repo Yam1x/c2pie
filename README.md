@@ -229,6 +229,7 @@ Simply upload the file you'd like to verify.
 The Content Credential issuer couldn’t be recognized. This file may not come from where it claims to.
 ```
 
+Please proceed to [production credentials section](#-getting-credentials-for-production) to find out about generating verifiable credentials.
 
 <br>
 

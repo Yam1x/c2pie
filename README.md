@@ -13,7 +13,7 @@
 
 **c2pie** is an open‑source Python library for constructing [C2PA](https://c2pa.org/) Content Credentials manifests that validate with [`c2patool`](https://github.com/contentauth/c2pa-rs) and other common C2PA consumers. 
 
-The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPEG and PDF files. 
+The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPG and PDF files. 
 
 🔸 **Supported file extensions**: `JPG`, `PDF`
 
@@ -41,7 +41,7 @@ For more detailed feature specification, please look at the [Features](#-feature
   + [Lint \& format](#lint--format)
 + [🥧 Features](#-features)
   + [Workflow of test applications](#workflow-of-test-applications)
-  + [Notes for PDF vs JPEG](#notes-for-pdf-vs-jpeg)
+  + [Notes for PDF vs JPG](#notes-for-pdf-vs-jpg)
 + [🥧 Certificates](#-certificates)
   + [Generating your own mock credentials](#generating-your-own-mock-credentials)
   + [Getting credentials for production](#getting-credentials-for-production)
@@ -266,7 +266,7 @@ Also make sure that you have test certificate chain and public key in `tests/cre
 
 You can test the signing workflow with the following VS Code tasks:
 
-🔸 `Run JPEG test application` 
+🔸 `Run JPG test application` 
 
 🔸 `Run PDF test application`
 
@@ -312,7 +312,7 @@ The latter option is also available via the VC Code task `Lint and Format`
 🔸 Assertion Store with common assertions (e.g., `c2pa.hash.data` hard‑binding, schema.org CreativeWork, etc.).
 
 🔸 Embedding
-  - JPEG via APP11 segments (size‑driven iterative layout).
+  - JPG via APP11 segments (size‑driven iterative layout).
   - PDF via incremental update at EOF (xref/trailer preserved; `/AF` + `/Names/EmbeddedFiles`).  
 
 🔸 Validation with `c2patool` (structure + signatures).
@@ -327,11 +327,11 @@ The latter option is also available via the VC Code task `Lint and Format`
 
 4) Write a new asset with C2PA.
 
-## Notes for PDF vs JPEG
+## Notes for PDF vs JPG
 
 🔸 **PDF**: we append an incremental update. The `c2pa.hash.data` exclusion starts at `len(original_pdf)` and its length equals the final tail size (computed iteratively).  
 
-🔸 **JPEG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
+🔸 **JPG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
 
 The library takes care of iterative sizing so the `c2pa.hash.data` matches exactly, otherwise validators return `assertion.dataHash.mismatch`.
 

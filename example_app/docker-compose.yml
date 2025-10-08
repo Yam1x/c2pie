@@ -9,10 +9,15 @@ services:
       context: ..
     volumes: 
       - .:/example_app/
+      #TODO: change to pip install c2pie when it becomes available
+      - ../pyproject.toml:/example_app/pyproject.toml 
+      - ../c2pie:/example_app/c2pie
     env_file:  "../.env-example"
     extra_hosts:
      - host.docker.internal:host-gateway
     command: [
+     "poetry",
+     "run",
      "jupyter-lab",
      "--ip=0.0.0.0",
      "--no-browser",
@@ -20,6 +25,7 @@ services:
      "--NotebookApp.password=''",
      "--allow-root",
     ]
+    
   c2pie-test-signing-jpg:
     container_name: 'c2pie-test-signing-jpg'
     volumes:

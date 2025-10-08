@@ -10,9 +10,9 @@ services:
     volumes: 
       - .:/example_app/
       #TODO: change to pip install c2pie when it becomes available
-      - ../pyproject.toml:/example_app/pyproject.toml 
+      - ../pyproject.toml:/example_app/pyproject.toml
       - ../c2pie:/example_app/c2pie
-    env_file:  "../.env-example"
+    env_file:  "./.example-app-env"
     extra_hosts:
      - host.docker.internal:host-gateway
     command: [
@@ -35,7 +35,7 @@ services:
       context: ..
       target: c2pie_base
     command: bash -c "c2pie sign --input_file test_files/test_image.jpg && echo "c2patool_validation_results:" && c2patool test_files/signed_test_image.jpg"
-    env_file:  "./.example-env"
+    env_file:  "./.example-app-env"
 
   c2pie-test-signing-pdf:
     container_name: 'c2pie-test-signing-pdf'
@@ -46,6 +46,6 @@ services:
       context: ..
       target: c2pie_base
     command: bash -c "c2pie sign --input_file test_files/test_doc.pdf && echo "c2patool_validation_results:" && c2patool test_files/signed_test_doc.pdf"
-    env_file:  "./.example-env"
+    env_file:  "./.example-app-env"
 
     

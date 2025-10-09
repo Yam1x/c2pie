@@ -6,8 +6,7 @@
 
 -------
 
-[![Unit Tests](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/run_unit_tests.yml/badge.svg)](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/run_unit_tests.yml)
-[![Lint](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/lint.yml/badge.svg)](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/lint.yml)
+[![CI](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/lint-and-test.yml)
 
 <br>
 

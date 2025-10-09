@@ -224,11 +224,14 @@ jobs:
       - name: Debug
         run: | 
           ls 
-          ls *.zip
           pwd
 
       - name: Unzip coverage reports
         run: |
+          pwd
+          echo "\n\n"
+          ls
+          echo "\n\n"
           unzip coverage-e2e.zip
           unzip coverage-unit.zip
 

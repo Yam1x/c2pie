@@ -19,9 +19,8 @@ RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable && \
     cargo install c2patool --locked
 
 COPY c2pie ./c2pie
-COPY pyproject.toml poetry.lock .
 COPY example_app .
-
+COPY pyproject.toml poetry.lock .
 
 RUN poetry config virtualenvs.create false \
   && poetry lock && poetry install --without dev --no-interaction --no-ansi 

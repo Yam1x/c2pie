@@ -223,6 +223,18 @@ jobs:
 
       - name: Debug
         run: |
+          ls -a
+          echo "==============="
+          
+
+      - name: Debug
+        run: |
+          ls -a .coverage
+          echo "==============="
+          
+
+      - name: Debug
+        run: |
           ls -a ./coverage-unit 
           echo "==============="
           ls -a ./coverage-e2e

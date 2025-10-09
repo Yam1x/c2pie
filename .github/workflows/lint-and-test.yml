@@ -221,6 +221,12 @@ jobs:
           name: coverage-e2e
           path: coverage-e2e.zip
 
+      - name: Debug
+        run: | 
+          ls 
+          ls *.zip
+          pwd
+
       - name: Unzip coverage reports
         run: |
           unzip coverage-e2e.zip

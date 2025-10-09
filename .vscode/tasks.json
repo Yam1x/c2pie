@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run JPEG test application",
+            "label": "Run JPG test application",
             "type": "shell",
             "command": "poetry install --no-interaction --no-ansi > /dev/null && export $(cat .env | xargs) && poetry run c2pie sign --input_file ${TEST_IMAGE_PATH}",
             "problemMatcher": [],

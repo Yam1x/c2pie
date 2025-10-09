@@ -9,7 +9,7 @@ from c2pie.c2pa.claim_signature import ClaimSignature
 from c2pie.c2pa.config import RETRY_SIGNATURE
 from c2pie.c2pa.manifest import Manifest
 from c2pie.c2pa.manifest_store import ManifestStore
-from c2pie.c2pa_injection.jpeg_injection import JpgSegmentApp11Storage
+from c2pie.c2pa_injection.jpg_injection import JpgSegmentApp11Storage
 from c2pie.c2pa_injection.pdf_injection import emplace_manifest_into_pdf
 from c2pie.utils.assertion_schemas import C2PA_AssertionTypes
 from c2pie.utils.content_types import C2PA_ContentTypes
@@ -66,12 +66,12 @@ def c2pie_EmplaceManifest(
         for manifest in manifests.manifests:
             claim = getattr(manifest, "claim", None)
             if claim is not None and hasattr(claim, "set_format"):
-                if format_type == C2PA_ContentTypes.jpg:
-                    claim.set_format("image/jpeg")
+                if format_type == C2PA_ContentTypes.jpg or format_type == C2PA_ContentTypes.jpeg:
+                    claim.set_format("image/jpg")
                 elif format_type == C2PA_ContentTypes.pdf:
                     claim.set_format("application/pdf")
 
-    if format_type == C2PA_ContentTypes.jpg:
+    if format_type == C2PA_ContentTypes.jpg or format_type == C2PA_ContentTypes.jpeg:
         assumed_hash_data_len = 0
         final_length = -1
         tail = b""
@@ -94,5 +94,4 @@ def c2pie_EmplaceManifest(
     if format_type == C2PA_ContentTypes.pdf:
         return emplace_manifest_into_pdf(content_bytes, manifests)
 
-    print(f"Unsupported content type {format_type}!")
-    return b""
+    raise ValueError(f"Unsupported content type {format_type}!")

@@ -1,0 +1,2 @@
+C2PIE_KEY_FILEPATH=/example_app/credentials/ps256.pem
+C2PIE_CERT_FILEPATH=/example_app/credentials/ps256.pub

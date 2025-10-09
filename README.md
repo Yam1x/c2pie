@@ -12,19 +12,27 @@
 
 **c2pie** is an open‑source Python library for constructing [C2PA](https://c2pa.org/) Content Credentials manifests that validate with [`c2patool`](https://github.com/contentauth/c2pa-rs) and other common C2PA consumers. 
 
-The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPEG and PDF files. 
+The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPG and PDF files. 
+
+🔸 **Supported file extensions**: `JPG`, `PDF`
+
+🔸 **Supported Python versions**: `3.9.2 - 3.14.0`
 
 For more detailed feature specification, please look at the [Features](#-features) section.
 
 > ⚠️ This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly.
 
-## Table of Content
+## Table of Contents
 + [🥧 Quick start](#-quick-start)
-  + [Prerequisites](#prerequisites)
-  + [Usage](#usage)
-    + [Command Line Interface](#command-line-interface)
-    + [Code](#code)
+  + [Running example apps with Docker Compose](#running-example-apps-with-docker-compose)
+  + [Running from your own environment](#running-from-your-own-environment)
+    + [Prerequisites](#prerequisites)
+    + [Usage](#usage)
+      + [Command Line Interface](#command-line-interface)
+      + [Code](#code)
     + [Validation](#validation)
+      + [c2patool](#c2patool)
+      + [C2PA Verify Tool](#c2pa-verify-tool)
 + [🥧 For developers](#-for-developers)
   + [First steps](#first-steps)
     + [Using Dev Containers](#using-dev-containers)
@@ -32,10 +40,9 @@ For more detailed feature specification, please look at the [Features](#-feature
   + [Run test applications](#run-test-applications)
   + [Run tests](#run-tests)
   + [Lint \& format](#lint--format)
-  + [CI](#ci)
 + [🥧 Features](#-features)
   + [Workflow of test applications](#workflow-of-test-applications)
-  + [Notes for PDF vs JPEG](#notes-for-pdf-vs-jpeg)
+  + [Notes for PDF vs JPG](#notes-for-pdf-vs-jpg)
 + [🥧 Certificates](#-certificates)
   + [Generating your own mock credentials](#generating-your-own-mock-credentials)
   + [Getting credentials for production](#getting-credentials-for-production)
@@ -47,40 +54,110 @@ For more detailed feature specification, please look at the [Features](#-feature
 
 # 🥧 Quick start
 
+## Running example apps with Docker Compose
 
-## Prerequisites
+For a quick test of c2pie's functionality with pre-prepared environment, test files and credentials, you can run our example apps.
+> ⚠️ Docker is essential for running example apps.
 
-1) Python environment. Currently supported Python versions: 3.9 - 3.13
-2) Private key and certificate chain pair
+Follow the steps:
+
+1. Clone the c2pie repository.
+
+2. Go to `example_app` directory:
+    ```bash
+    cd example_app
+    ```
+
+3. To test signing a JPG file, run:
+    ```bash
+    docker compose up c2pie-test-signing-jpg
+    ```
+  
+   To test signing a PDF file, run:
+    ```bash
+    docker compose up c2pie-test-signing-pdf
+    ```
+
+    After running either of these commands, you'll see a resulting signed file appear in `example_app/test_files` directory with a `signed-` prefix and a corresponding message with c2patool validation results in your terminal like this:
+    
+    ```bash
+    Successfully signed the file test_files/test_image.jpg!
+    The result was saved to test_files/signed_test_image.jpg. 
+    c2patool_validation_results:
+    {
+        "active_manifest": "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9",
+        "manifests": {
+        "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9": {
+            "claim_generator": "c2pie",
+        ................
+    },
+    "validation_results": {
+        "activeManifest": {
+        "success": [
+            {
+                "code": "claimSignature.insideValidity",
+                "url": "self#jumbf=/c2pa/urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
+                "explanation": "claim signature valid"
+            },
+        ................
+        },
+        "validation_state": "Valid" 
+    }
+    ```
+
+You can also set up a Jupyter Lab environment and test c2pie there by running:
+```bash
+docker compose up c2pie-notebooks
+```
+
+After running this command you should be able to access Jupyter Lab at `localhost:8888` from your browser.
+
+The existing `notebooks` directory already contains an example notebook with commands to test signing functionality. 
+
+## Running from your own environment
+
+### Prerequisites
+
+1) Python environment. Currently supported Python versions: 3.9.2 - 3.14.0.
+2) Private key and certificate chain pair. You can go to [Certificates](#-certificates) for instructions on how to generate one.
+
+    The repo contains pre-generated mock credentials in `tests/credentials`. You can use them for a quick start.
+
 3) Key and certificate filepaths exported into the current environment with:
     ```bash
-    export C2PIE_KEY_FILEPATH=path/to/your/private/key/file
-    export C2PIE_CERT_FILEPATH=path/to/your/certificate/chain/file
+    export C2PIE_KEY_FILEPATH=<path/to/private_key_file>
+    export C2PIE_CERT_FILEPATH=<path/to/certificate_chain_file>
     ```
-4) Install c2pie package by running this command from the current environment:
+
+4) c2pie package installed in your current environment:
 
     ```bash
     pip install c2pie
     ```
 
 
-## Usage
+### Usage
 
+#### Command Line Interface
 
-### Command Line Interface
-
-You can run the following command to sign an input JPG/JPEG or PDF file:
+You can run the following command to sign an input JPG or PDF file:
 ```python
-c2pie sign --input_file path/to/input_file
+c2pie sign --input_file <path/to/input_file>
 ```
 
 By default, signed file will be saved to the same directory as the input file with the *signed_* prefix. 
 To explicitly set output path, use:
 ```python
-c2pie sign --input_file path/to/input_file --output_file path/to/output/file
+c2pie sign --input_file <path/to/input_file> --output_file <path/to/output_file>
 ```
 
-### Code
+If the file has been successfully signed, you'll see a message like this: 
+```bash
+Successfully signed the file tests/test_files/test_doc.pdf!
+The result was saved to tests/test_files/signed_test_doc.pdf.
+```
+
+#### Code
 
 To sign a file and save the output to the same directory:
 
@@ -100,14 +177,58 @@ output_file_path = "path/to/another/file/"
 sign_file(input_path=input_file_path, output_path=output_file_path)
 ```
 
+If the file has been successfully signed, you'll see a message like this: 
+```bash
+Successfully signed the file tests/test_files/test_doc.pdf!
+The result was saved to tests/test_files/signed_test_doc.pdf.
+```
+
 ### Validation
 
+#### c2patool 
 
 Output files can be validated with:
 ```bash
 c2patool path/to/your_output.jpg
 c2patool path/to/your_output.pdf
 ```
+
+If the file has been correctly signed and validation is successful, the results you'll see in the terminal will look similar to this:
+```bash
+c2patool_validation_results:
+{
+    "active_manifest": "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9",
+    "manifests": {
+    "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9": {
+        "claim_generator": "c2pie",
+    ................
+},
+"validation_results": {
+    "activeManifest": {
+    "success": [
+        {
+            "code": "claimSignature.insideValidity",
+            "url": "self#jumbf=/c2pa/urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
+            "explanation": "claim signature valid"
+        },
+    ................
+    },
+    "validation_state": "Valid" 
+}
+```
+
+#### C2PA Verify Tool
+
+You can also verify signed files on [Verify platform](https://contentcredentials.org/verify).
+
+Simply upload the file you'd like to verify.
+
+⚠️ NOTE: Files embedded with self-signed certificates (like the ones this repository contains) **won't be verified**. You'll get the following message:
+```
+The Content Credential issuer couldn’t be recognized. This file may not come from where it claims to.
+```
+
+Please proceed to [production credentials section](#-getting-credentials-for-production) to find out about generating verifiable credentials.
 
 <br>
 
@@ -160,7 +281,7 @@ Also make sure that you have test certificate chain and public key in `tests/cre
 
 You can test the signing workflow with the following VS Code tasks:
 
-🔸 `Run JPEG test application` 
+🔸 `Run JPG test application` 
 
 🔸 `Run PDF test application`
 
@@ -195,10 +316,6 @@ ruff check . --fix
 
 The latter option is also available via the VC Code task `Lint and Format`
 
-## CI
-
-#TODO
-
 <br>
 
 # 🥧 Features
@@ -210,7 +327,7 @@ The latter option is also available via the VC Code task `Lint and Format`
 🔸 Assertion Store with common assertions (e.g., `c2pa.hash.data` hard‑binding, schema.org CreativeWork, etc.).
 
 🔸 Embedding
-  - JPEG via APP11 segments (size‑driven iterative layout).
+  - JPG via APP11 segments (size‑driven iterative layout).
   - PDF via incremental update at EOF (xref/trailer preserved; `/AF` + `/Names/EmbeddedFiles`).  
 
 🔸 Validation with `c2patool` (structure + signatures).
@@ -219,17 +336,17 @@ The latter option is also available via the VC Code task `Lint and Format`
 
 1) Load a sample asset (`tests/test_files/..`);
 
-2) Build a manifest with `c2pie_GenerateAssertion`, `c2pie_GenerateHashDataAssertion`, `c2pie_GenerateManifest` 
+2) Build a manifest with `c2pie_GenerateAssertion`, `c2pie_GenerateHashDataAssertion`, `c2pie_GenerateManifest`;
 
 3) Embed the manifest (`c2pie_EmplaceManifest`);  
 
 4) Write a new asset with C2PA.
 
-## Notes for PDF vs JPEG
+## Notes for PDF vs JPG
 
 🔸 **PDF**: we append an incremental update. The `c2pa.hash.data` exclusion starts at `len(original_pdf)` and its length equals the final tail size (computed iteratively).  
 
-🔸 **JPEG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
+🔸 **JPG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
 
 The library takes care of iterative sizing so the `c2pa.hash.data` matches exactly, otherwise validators return `assertion.dataHash.mismatch`.
 

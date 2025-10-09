@@ -1,4 +1,4 @@
-JPEG_SEGMENT_MAX_PAYLOAD_LENGTH = 65517
+JPG_SEGMENT_MAX_PAYLOAD_LENGTH = 65517
 
 
 class JpgSegment:
@@ -77,8 +77,8 @@ class JpgSegmentApp11Storage:
 
         while payload_length > 0:
             sequence_number += 1
-            chunk_length = JPEG_SEGMENT_MAX_PAYLOAD_LENGTH
-            if payload_length < JPEG_SEGMENT_MAX_PAYLOAD_LENGTH:
+            chunk_length = JPG_SEGMENT_MAX_PAYLOAD_LENGTH
+            if payload_length < JPG_SEGMENT_MAX_PAYLOAD_LENGTH:
                 chunk_length = payload_length
 
             app11_segments.append(

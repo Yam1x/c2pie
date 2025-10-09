@@ -1,0 +1,51 @@
+services:
+  c2pie-notebooks:
+    container_name: c2pie-notebooks
+    ports:
+     - 8888:8888
+    build:
+      dockerfile: ./example_app/Dockerfile
+      target: c2pie_with_jupyter
+      context: ..
+    volumes: 
+      - .:/example_app/
+      #TODO: change to pip install c2pie when it becomes available
+      - ../pyproject.toml:/example_app/pyproject.toml
+      - ../c2pie:/example_app/c2pie
+    env_file:  "./.example-app-env"
+    extra_hosts:
+     - host.docker.internal:host-gateway
+    command: [
+     "poetry",
+     "run",
+     "jupyter-lab",
+     "--ip=0.0.0.0",
+     "--no-browser",
+     "--NotebookApp.token=''",
+     "--NotebookApp.password=''",
+     "--allow-root",
+    ]
+    
+  c2pie-test-signing-jpg:
+    container_name: 'c2pie-test-signing-jpg'
+    volumes:
+      - ./test_files:/example_app/test_files
+    build:
+      dockerfile: ./example_app/Dockerfile
+      context: ..
+      target: c2pie_base
+    command: bash -c "c2pie sign --input_file test_files/test_image.jpg && echo "c2patool_validation_results:" && c2patool test_files/signed_test_image.jpg"
+    env_file:  "./.example-app-env"
+
+  c2pie-test-signing-pdf:
+    container_name: 'c2pie-test-signing-pdf'
+    volumes:
+      - ./test_files:/example_app/test_files
+    build:
+      dockerfile: ./example_app/Dockerfile
+      context: ..
+      target: c2pie_base
+    command: bash -c "c2pie sign --input_file test_files/test_doc.pdf && echo "c2patool_validation_results:" && c2patool test_files/signed_test_doc.pdf"
+    env_file:  "./.example-app-env"
+
+    

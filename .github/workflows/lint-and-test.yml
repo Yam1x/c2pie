@@ -100,6 +100,12 @@ jobs:
             --maxfail=1 \
             -v
       
+      - name: Debug
+        run: | 
+          ls -a 
+          echo "==============="
+          pwd
+
       - name: Upload coverage artifact
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4

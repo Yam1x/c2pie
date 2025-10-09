@@ -232,6 +232,8 @@ jobs:
           echo "\n\n"
           ls
           echo "\n\n"
+          ls -lh coverage-e2e.zip
+          echo "\n\n"
           unzip coverage-e2e.zip
           unzip coverage-unit.zip
 

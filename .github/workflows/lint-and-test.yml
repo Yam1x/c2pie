@@ -96,7 +96,6 @@ jobs:
         run: |
           poetry run pytest \
             --cov=c2pie \
-            --cov-report=xml:coverage-unit.xml \
             -m "not e2e" \
             --maxfail=1 \
             -v
@@ -108,7 +107,6 @@ jobs:
           name: coverage-unit
           path: |
             coverage-unit.xml
-            .coverage/
 
   run-e2e-tests:
     name: Run e2e tests
@@ -177,7 +175,6 @@ jobs:
         run: |
           poetry run pytest tests/c2pa/e2e_test.py \
             --cov=c2pie \
-            --cov-report=xml:coverage-e2e.xml \
             -v
         env:
           C2PIE_KEY_FILEPATH: ${{ vars.C2PIE_KEY_FILEPATH }}
@@ -190,7 +187,6 @@ jobs:
           name: coverage-e2e
           path: |
             coverage-e2e.xml
-            .coverage/
 
   combine-coverage:
     name: Combine coverage and upload to Codecov
@@ -220,28 +216,6 @@ jobs:
         with:
           name: coverage-e2e
           path: coverage-e2e
-
-      - name: Debug
-        run: |
-          ls -a
-          echo "==============="
-          
-
-      - name: Debug
-        run: |
-          ls -a .coverage
-          echo "==============="
-          
-
-      - name: Debug
-        run: |
-          ls -a ./coverage-unit 
-          echo "==============="
-          ls -a ./coverage-e2e
-          echo "==============="
-
-          ls -aR ./coverage-e2e
-          echo "==============="
 
       - name: Combine coverage reports
         run: |

@@ -30,6 +30,7 @@ services:
     container_name: 'c2pie-test-signing-jpg'
     volumes:
       - ./test_files:/example_app/test_files
+      - ../pyproject.toml:/example_app/pyproject.toml
     build:
       dockerfile: ./example_app/Dockerfile
       context: ..
@@ -41,6 +42,7 @@ services:
     container_name: 'c2pie-test-signing-pdf'
     volumes:
       - ./test_files:/example_app/test_files
+      - ../pyproject.toml:/example_app/pyproject.toml
     build:
       dockerfile: ./example_app/Dockerfile
       context: ..

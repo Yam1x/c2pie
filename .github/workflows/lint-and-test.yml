@@ -97,7 +97,7 @@ jobs:
           poetry run pytest \
             --cov=c2pie \
             -m "not e2e" \
-            --cov-report=xml:coverage-unit.xml \
+            --cov-report=xml:coverage.xml \
             --maxfail=1 \
             -v
 
@@ -106,7 +106,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-unit
-          path: coverage-unit.xml
+          path: coverage.xml
 
   run-e2e-tests:
     name: Run e2e tests
@@ -175,7 +175,7 @@ jobs:
         run: |
           poetry run pytest tests/c2pa/e2e_test.py \
             --cov=c2pie \
-            --cov-report=xml:coverage-e2e.xml \
+            --cov-report=xml:coverage.xml \
             -v
         env:
           C2PIE_KEY_FILEPATH: ${{ vars.C2PIE_KEY_FILEPATH }}
@@ -186,7 +186,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-e2e
-          path: coverage-e2e.xml
+          path: coverage.xml
         
   combine-coverage:
     name: Combine coverage and upload to Codecov
@@ -219,7 +219,7 @@ jobs:
 
       - name: Combine coverage reports
         run: |
-          coverage combine ./coverage-e2e/coverage-e2e.xml ./coverage-unit/coverage-unit.xml --data-file='coverage' --debug
+          coverage combine  --data-file='coverage' --debug ./coverage-e2e/coverage.xml ./coverage-unit/coverage.xml
           coverage xml -o coverage-combined.xml
           coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
           coverage report

@@ -228,9 +228,12 @@ jobs:
           ls -a ./coverage-e2e
           echo "==============="
 
+          ls -aR ./coverage-e2e
+          echo "==============="
+
       - name: Combine coverage reports
         run: |
-          coverage combine ./coverage-e2e/ ./coverage-unit/
+          coverage combine ./coverage-e2e/.coverage ./coverage-unit/.coverage
           coverage xml -o coverage-combined.xml
           coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
           coverage report

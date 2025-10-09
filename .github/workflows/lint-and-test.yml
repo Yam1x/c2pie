@@ -213,13 +213,18 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: coverage-unit
-          path: ./coverage-unit
+          path: coverage-unit
 
       - name: Download e2e coverage
         uses: actions/download-artifact@v5
         with:
           name: coverage-e2e
-          path: ./coverage-e2e
+          path: coverage-e2e
+
+      - name: Unzip coverage reports
+        run: |
+          unzip coverage-e2e
+          unzip coverage-unit
 
       - name: Combine coverage reports
         run: |

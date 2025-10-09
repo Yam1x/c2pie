@@ -6,7 +6,7 @@
 
 -------
 
-[![CI](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/tc-c2pa-py/actions/workflows/lint-and-test.yml)
+[![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 
 <br>
 

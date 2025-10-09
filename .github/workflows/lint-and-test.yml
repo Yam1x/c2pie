@@ -108,7 +108,6 @@ jobs:
           name: coverage-unit
           path: |
             coverage-unit.xml
-            .coverage
 
   run-e2e-tests:
     name: Run e2e tests
@@ -190,7 +189,6 @@ jobs:
           name: coverage-e2e
           path: |
             coverage-e2e.xml
-            .coverage
 
   combine-coverage:
     name: Combine coverage and upload to Codecov
@@ -230,20 +228,9 @@ jobs:
           echo "===================="
           ls coverage-unit
 
-      # - name: Unzip coverage reports
-      #   run: |
-      #     pwd
-      #     echo "\n\n"
-      #     ls
-      #     echo "\n\n"
-      #     ls -lh coverage-e2e.zip
-          
-      #     unzip coverage-e2e.zip
-      #     unzip coverage-unit.zip
-
       - name: Combine coverage reports
         run: |
-          coverage combine ./coverage-unit/coverage-e2e.xml ./coverage-unit/coverage-unit.xml
+          coverage combine ./coverage-e2e/coverage-e2e.xml ./coverage-unit/coverage-unit.xml
           coverage xml -o coverage-combined.xml
           coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
           coverage report

@@ -17,7 +17,7 @@ The package supports building claims, assertions, and COSE signatures and embedd
 
 🔸 **Supported file extensions**: `JPG`, `PDF`
 
-🔸 **Supported Python versions**: `3.9 - 3.14`
+🔸 **Supported Python versions**: `3.9.2 - 3.14.0`
 
 For more detailed feature specification, please look at the [Features](#-features) section.
 
@@ -119,7 +119,7 @@ The existing `notebooks` directory already contains an example notebook with com
 
 ### Prerequisites
 
-1) Python environment. Currently supported Python versions: 3.9 - 3.14. 
+1) Python environment. Currently supported Python versions: 3.9.2 - 3.14.0.
 2) Private key and certificate chain pair. You can go to [Certificates](#-certificates) for instructions on how to generate one.
 
     The repo contains pre-generated mock credentials in `tests/credentials`. You can use them for a quick start.

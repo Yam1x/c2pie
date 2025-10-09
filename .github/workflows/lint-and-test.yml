@@ -221,6 +221,13 @@ jobs:
           name: coverage-e2e
           path: coverage-e2e
 
+      - name: Debug
+        run: |
+          ls ./coverage-unit
+          echo "==============="
+          ls ./coverage-e2e
+          echo "==============="
+
       - name: Combine coverage reports
         run: |
           coverage combine ./coverage-e2e/ ./coverage-unit/

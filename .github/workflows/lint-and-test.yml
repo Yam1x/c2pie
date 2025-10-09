@@ -223,8 +223,8 @@ jobs:
 
       - name: Unzip coverage reports
         run: |
-          unzip coverage-e2e
-          unzip coverage-unit
+          unzip coverage-e2e.zip
+          unzip coverage-unit.zip
 
       - name: Combine coverage reports
         run: |

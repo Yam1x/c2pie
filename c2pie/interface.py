@@ -66,12 +66,12 @@ def c2pie_EmplaceManifest(
         for manifest in manifests.manifests:
             claim = getattr(manifest, "claim", None)
             if claim is not None and hasattr(claim, "set_format"):
-                if format_type == C2PA_ContentTypes.jpg:
+                if format_type == C2PA_ContentTypes.jpg or format_type == C2PA_ContentTypes.jpeg:
                     claim.set_format("image/jpg")
                 elif format_type == C2PA_ContentTypes.pdf:
                     claim.set_format("application/pdf")
 
-    if format_type == C2PA_ContentTypes.jpg:
+    if format_type == C2PA_ContentTypes.jpg or format_type == C2PA_ContentTypes.jpeg:
         assumed_hash_data_len = 0
         final_length = -1
         tail = b""
@@ -94,5 +94,4 @@ def c2pie_EmplaceManifest(
     if format_type == C2PA_ContentTypes.pdf:
         return emplace_manifest_into_pdf(content_bytes, manifests)
 
-    print(f"Unsupported content type {format_type}!")
-    return b""
+    raise ValueError(f"Unsupported content type {format_type}!")

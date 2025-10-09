@@ -4,6 +4,7 @@ import enum
 class C2PA_ContentTypes(enum.Enum):
     jpg = ".jpg"
     pdf = ".pdf"
+    jpeg = ".jpeg"
 
 
 jumbf_content_types = {

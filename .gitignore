@@ -6,3 +6,5 @@ dist
 **/signed_*
 .vscode/launch.json
 .env
+**/.ipynb_checkpoints
+**/.Trash*

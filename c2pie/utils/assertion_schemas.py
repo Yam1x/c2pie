@@ -49,6 +49,6 @@ def get_assertion_label(assertion_type: C2PA_AssertionTypes) -> str:
     elif assertion_type == C2PA_AssertionTypes.data_hash:
         return "c2pa.hash.data"
     elif assertion_type == C2PA_AssertionTypes.thumbnail:
-        return "c2pa.thumbnail.claim.jpeg"
+        return "c2pa.thumbnail.claim.jpg"
     else:
         return ""

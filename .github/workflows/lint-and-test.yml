@@ -223,9 +223,9 @@ jobs:
 
       - name: Debug
         run: |
-          ls ./coverage-unit
+          ls -a ./coverage-unit 
           echo "==============="
-          ls ./coverage-e2e
+          ls -a ./coverage-e2e
           echo "==============="
 
       - name: Combine coverage reports

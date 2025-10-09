@@ -337,7 +337,7 @@ The latter option is also available via the VC Code task `Lint and Format`
 
 1) Load a sample asset (`tests/test_files/..`);
 
-2) Build a manifest with `c2pie_GenerateAssertion`, `c2pie_GenerateHashDataAssertion`, `c2pie_GenerateManifest` 
+2) Build a manifest with `c2pie_GenerateAssertion`, `c2pie_GenerateHashDataAssertion`, `c2pie_GenerateManifest`;
 
 3) Embed the manifest (`c2pie_EmplaceManifest`);  
 

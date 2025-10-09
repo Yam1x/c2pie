@@ -9,7 +9,7 @@ from c2pie.c2pa.claim_signature import ClaimSignature
 from c2pie.c2pa.config import RETRY_SIGNATURE
 from c2pie.c2pa.manifest import Manifest
 from c2pie.c2pa.manifest_store import ManifestStore
-from c2pie.c2pa_injection.jpeg_injection import JpgSegmentApp11Storage
+from c2pie.c2pa_injection.jpg_injection import JpgSegmentApp11Storage
 from c2pie.c2pa_injection.pdf_injection import emplace_manifest_into_pdf
 from c2pie.utils.assertion_schemas import C2PA_AssertionTypes
 from c2pie.utils.content_types import C2PA_ContentTypes
@@ -67,7 +67,7 @@ def c2pie_EmplaceManifest(
             claim = getattr(manifest, "claim", None)
             if claim is not None and hasattr(claim, "set_format"):
                 if format_type == C2PA_ContentTypes.jpg:
-                    claim.set_format("image/jpeg")
+                    claim.set_format("image/jpg")
                 elif format_type == C2PA_ContentTypes.pdf:
                     claim.set_format("application/pdf")
 

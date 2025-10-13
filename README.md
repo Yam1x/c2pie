@@ -8,6 +8,8 @@
 
 [![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 ![Coverage](https://codecov.io/gh/TourmalineCore/c2pie/branch/master/graph/badge.svg)
+[![c2pa](https://img.shields.io/badge/c2pa-v1.4-seagreen.svg)](https://c2pa.org/)
+ 
 
 <br>
 

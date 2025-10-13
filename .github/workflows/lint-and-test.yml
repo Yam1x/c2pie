@@ -202,6 +202,7 @@ jobs:
   combine-coverage:
     name: Combine coverage and upload to Codecov
     needs: [run-unit-tests, run-e2e-tests]
+    if: always()
     runs-on: ubuntu-latest
     
     steps:
@@ -221,12 +222,14 @@ jobs:
         with:
           name: coverage-unit
           path: coverage-unit
+        continue-on-error: true
 
       - name: Download e2e coverage
         uses: actions/download-artifact@v5
         with:
           name: coverage-e2e
           path: coverage-e2e
+        continue-on-error: true
 
       - name: Check if artifacts exist
         id: check

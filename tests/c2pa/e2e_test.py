@@ -19,6 +19,9 @@ test_files_by_extension = {
     "jpg": [
         "test_image.jpg",
     ],
+    "jpeg": [
+        "test_image.jpeg",
+    ],
 }
 
 

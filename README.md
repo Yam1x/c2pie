@@ -7,6 +7,7 @@
 -------
 
 [![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
+![Coverage](https://codecov.io/gh/TourmalineCore/c2pie/branch/master/graph/badge.svg)
 
 <br>
 

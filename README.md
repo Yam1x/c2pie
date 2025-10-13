@@ -88,7 +88,7 @@ Follow the steps:
     {
         "active_manifest": "urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9",
         "manifests": {
-        "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9": {
+        "urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9": {
             "claim_generator": "c2pie",
         ................
     },
@@ -198,9 +198,9 @@ If the file has been correctly signed and validation is successful, the results 
 ```bash
 c2patool_validation_results:
 {
-    "active_manifest": "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9",
+    "active_manifest": "urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9",
     "manifests": {
-    "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9": {
+    "urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9": {
         "claim_generator": "c2pie",
     ................
 },
@@ -209,7 +209,7 @@ c2patool_validation_results:
     "success": [
         {
             "code": "claimSignature.insideValidity",
-            "url": "self#jumbf=/c2pa/urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
+            "url": "self#jumbf=/c2pa/urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
             "explanation": "claim signature valid"
         },
     ................

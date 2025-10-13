@@ -21,9 +21,11 @@ The package supports building claims, assertions, and COSE signatures and embedd
 
 🔸 **Supported Python versions**: `3.9.2 - 3.14.0`
 
-For more detailed feature specification, please look at the [Features](#-features) section.
+🔸 **C2PA Spec Version**: `1.4`
 
-> ⚠️ This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly.
+For more detailed feature specification, please look at the [Features](#-features) section.
+> [!WARNING]
+> This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly.
 
 ## Table of Contents
 + [🥧 Quick start](#-quick-start)
@@ -60,7 +62,9 @@ For more detailed feature specification, please look at the [Features](#-feature
 ## Running example apps with Docker Compose
 
 For a quick test of c2pie's functionality with pre-prepared environment, test files and credentials, you can run our example apps.
-> ⚠️ Docker is essential for running example apps.
+
+>[!IMPORTANT]
+> Docker is essential for running example apps.
 
 Follow the steps:
 
@@ -226,12 +230,15 @@ You can also verify signed files on [Verify platform](https://contentcredentials
 
 Simply upload the file you'd like to verify.
 
-⚠️ NOTE: Files embedded with self-signed certificates (like the ones this repository contains) **won't be verified**. You'll get the following message:
-```
-The Content Credential issuer couldn’t be recognized. This file may not come from where it claims to.
-```
-
-Please proceed to [production credentials section](#-getting-credentials-for-production) to find out about generating verifiable credentials.
+>[!IMPORTANT]
+> Files embedded with self-signed certificates (like the ones this repository contains) **won't be verified**. 
+> 
+> You'll get the following message:
+>```
+>The Content Credential issuer couldn’t be recognized. This file may not come from where it claims to.
+>```
+>
+>Please proceed to [production credentials section](#-getting-credentials-for-production) to find out about generating verifiable credentials.
 
 <br>
 
@@ -248,6 +255,7 @@ To contribute to the c2pie package development, you can use one of the following
 
 ### Using a Local Environment
 
+>[!NOTE]
 >We strongly recommend using Dev Containers in order to automatically create an isolated Python environment with all dependencies installed, environment variables exported and some helpful development tools included.
 
 
@@ -271,8 +279,8 @@ To contribute to the c2pie package development, you can use one of the following
     
     poetry run ruff check
     ```
-
-    > Commands in further sections don't include `poetry run` by default as they are intended to be run from a Dev Container. 
+>[!WARNING]
+> Commands in further sections don't include `poetry run` by default as they are intended to be run from a Dev Container. Remember to add `poetry run`.
 
 
 ## Run test applications
@@ -357,7 +365,10 @@ The library takes care of iterative sizing so the `c2pa.hash.data` matches exact
 
 # 🥧 Certificates
 
-Example certificate and key are located in `tests/credentials`. They are suitable for development only ⚠️
+Example certificate and key are located in `tests/credentials`. 
+
+>[!WARNING]
+>They are suitable for development only ⚠️
 
 ## Generating your own mock credentials
 
@@ -382,11 +393,13 @@ You can generate your own mock credentials for testing and developing the packag
     -signkey  credentials/<private-key-filename>.pem \
     -out credentials/<certificate-filename>.pem
     ```
-> ⚠️ Remember to update environment variables to use your newly generated credentials.
+>[!IMPORTANT]
+> Remember to update environment variables to use your newly generated credentials.
 
+>[!NOTE]
 > You can change certificate's validity period with --days option at the last step.
-
-> Certificate Signing Request file (*csr.pem*) can be deleted after the certificate has been generated.
+>
+>Certificate Signing Request file (*csr.pem*) can be deleted after the certificate has been generated.
 
 
 ## Getting credentials for production

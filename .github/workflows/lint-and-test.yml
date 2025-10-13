@@ -170,10 +170,9 @@ jobs:
 
       - name: Install Rust toolchain and c2patool
         if: steps.cache-rust.outputs.cache-hit != 'true'
-        run: |
-          curl -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
-          . "$HOME/.cargo/env"
-          cargo install c2patool --locked
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: c2patool
 
       - name: Add cargo to PATH
         run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH

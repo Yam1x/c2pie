@@ -8,3 +8,4 @@ dist
 .env
 **/.ipynb_checkpoints
 **/.Trash*
+**/.DS_Store

@@ -228,6 +228,21 @@ jobs:
           name: coverage-e2e
           path: coverage-e2e
 
+      - name: Check if artifacts exist
+        id: check
+        run: |
+          if [ -f ./coverage-e2e/.coverage ] && [ -f ./coverage-unit/.coverage ]; then
+            echo "ready=true" >> $GITHUB_OUTPUT
+          else
+            echo "ready=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Fail if coverage missing
+        if: steps.check.outputs.ready != 'true'
+        run: |
+          echo "Coverage artifacts not found — skipping coverage report"
+          exit 1
+
       - name: Combine coverage reports
         run: |
           coverage combine  ./coverage-e2e/.coverage ./coverage-unit/.coverage

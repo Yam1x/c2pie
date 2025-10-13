@@ -164,6 +164,7 @@ jobs:
           path: |
             ~/.rustup
             ~/.cargo
+            ~/.cargo-install
           key: ${{ runner.os }}-rust-
           restore-keys: |
             ${{ runner.os }}-rust-

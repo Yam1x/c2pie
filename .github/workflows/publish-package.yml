@@ -19,7 +19,6 @@ jobs:
 
   release-build:
     name: Build package
-    if: startsWith(github.event.ref, 'refs/tags/v')
     needs: linting-and-testing
 
     strategy: 

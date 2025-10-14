@@ -267,8 +267,8 @@ jobs:
 
       - name: Find existing and calculated test coverage scores
         run: |
-          echo 'EXISTING_COVERAGE=$(grep -oP "(?<=coverage-)\d+" README.md | head -n1)' >> $GITHUB_ENV
-          echo 'CALCULATED_COVERAGE=$(jq -r .totals.percent_covered_display coverage-combined.json)' >> $GITHUB_ENV
+          echo $(grep -oP "(?<=coverage-)\d+" README.md | head -n1) >> $EXISTING_COVERAGE
+          echo $(jq -r .totals.percent_covered_display coverage-combined.json) >> $CALCULATED_COVERAGE
       
       - name: Debug
         run: |
@@ -276,7 +276,7 @@ jobs:
           echo $CALCULATED_COVERAGE
 
       - name: Commit and Push Changes
-        if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }}
+        if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
         run: |
 
           export EXISTING_COVERAGE_BADGE_URL=https://img.shields.io/badge/coverage-$EXISTING_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c

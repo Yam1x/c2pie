@@ -184,7 +184,7 @@ jobs:
           path: .coverage
         
   combine-coverage:
-    name: Combine coverage and upload to Codecov
+    name: Combine coverage and upload it
     needs: [run-unit-tests, run-e2e-tests]
     if: always()
     runs-on: ubuntu-latest
@@ -243,11 +243,43 @@ jobs:
           name: coverage-combined
           path: coverage-combined.json
         
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: coverage-combined.xml
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
+  update-coverage:
+    runs-on: ubuntu-latest
+    needs: [combine-coverage]
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository 
+        uses: actions/checkout@v5 
+      
+      - name: Download jq
+        run: |
+          apt install jq
+      
+      - name: Find existing and calculated test coverage scores
+        run: |
+          export EXISTING_COVERAGE=$(grep -oP '(?<=coverage-)\d+' README.md | head -n1)
+          export CALCULATED_COVERAGE=$(jq -r .totals.percent_covered_display' coverage-combined.json)
+      
+      - name: Debug
+        run: |
+          echo $EXISTING_COVERAGE
+          echo $CALCULATED_COVERAGE
 
-      # ![Coverage](https://codecov.io/gh/TourmalineCore/c2pie/branch/master/graph/badge.svg)
+      - name: Commit and Push Changes
+        if: ${{ EXISTING_COVERAGE }} != ${{ CALCULATED_COVERAGE }}
+        run: |
+
+          export EXISTING_COVERAGE_BADGE_URL=https://img.shields.io/badge/coverage-$EXISTING_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c
+          export CALCULATED_COVERAGE_BADGE_URL=https://img.shields.io/badge/coverage-$CALCULATED_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c
+
+          git config --global user.name github-actions[bot]
+          git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+
+          sed -i -e 's/$EXISTING_COVERAGE_BADGE_URL/$CALCULATED_COVERAGE_BADGE_URL/g' README.md
+          git add README.md
+
+          git commit -m "docs(readme): bring test coverage score up to date"
+          
+          git push origin ${{ github.ref }}

@@ -52,6 +52,7 @@ jobs:
       - name: Upload dists
         uses: actions/upload-artifact@v4
         with:
+          name: dist
           path: dist
 
   pypi-publish:
@@ -70,6 +71,7 @@ jobs:
       - name: Retrieve release distributions
         uses: actions/download-artifact@v5
         with:
+          name: dist
           path: dist
 
       - name: Publish package distributions to PyPI

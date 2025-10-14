@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.1.0-alpha.3 (2025-10-14)
+
+### Features
+
+- **workflows**: Remove multi-platform build
+  ([`c7cb49e`](https://github.com/TourmalineCore/c2pie/commit/c7cb49e644aa93b40714d66598fe3dd290937510))
+
+
 ## v0.1.0-alpha.2 (2025-10-14)
 
 ### Bug Fixes

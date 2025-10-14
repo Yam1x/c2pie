@@ -262,17 +262,17 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: coverage-combined
-          path: coverage-combined.json
+          path: coverage-combined
 
       - name: Find existing and calculated test coverage scores
         run: |
           echo "EXISTING_COVERAGE=$(grep -oP '(?<=coverage-)\d+' README.md | head -n1)" >> "$GITHUB_ENV"
-          echo "CALCULATED_COVERAGE=$(jq -r .totals.percent_covered_display coverage-combined.json)" >> "$GITHUB_ENV"
+          echo "CALCULATED_COVERAGE=$(jq -r .totals.percent_covered_display coverage-combined/coverage-combined.json)" >> "$GITHUB_ENV"
       
       - name: Debug
         run: |
-          cat coverage-combined.json
           ls -la
+          cat coverage-combined/coverage-combined.json
           echo $EXISTING_COVERAGE
           echo $CALCULATED_COVERAGE
 

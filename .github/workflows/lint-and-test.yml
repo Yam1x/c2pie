@@ -267,8 +267,8 @@ jobs:
 
       - name: Find existing and calculated test coverage scores
         run: |
-          echo $(grep -oP "(?<=coverage-)\d+" README.md | head -n1) >> $EXISTING_COVERAGE
-          echo $(jq -r .totals.percent_covered_display coverage-combined.json) >> $CALCULATED_COVERAGE
+          echo "EXISTING_COVERAGE=\$(grep -oP '(?<=coverage-)\d+' README.md | head -n1)" >> $GITHUB_ENV
+          echo "CALCULATED_COVERAGE=\$(jq -r .totals.percent_covered_display coverage-combined.json)" >> $GITHUB_ENV
       
       - name: Debug
         run: |

@@ -46,15 +46,15 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Build and Publish the Package        
+      - name: Build the Package        
         run: |
           poetry build
 
       - name: Upload dists
         uses: actions/upload-artifact@v4
         with:
-          name: release-dists
-          path: dist/
+          name: release-dists-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: dist/*
 
   pypi-publish:
     runs-on: ubuntu-latest
@@ -67,8 +67,16 @@ jobs:
       - name: Retrieve release distributions
         uses: actions/download-artifact@v5
         with:
-          name: release-dists
           path: dist/
+        run: ls -R dist
+
+      - name: Combine all distributions
+        run: |
+          mkdir -p final_dists
+          find dist -type f -name "*.whl" -exec cp {} final_dists/ \;
+          find dist -type f -name "*.tar.gz" -exec cp {} final_dists/ \;
 
       - name: Publish release distributions to PyPI
         uses: pypa/gh-action-pypi-publish@3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f
+        with:
+          packages-dir: final_dists

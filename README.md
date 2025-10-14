@@ -15,17 +15,21 @@
 
 **c2pie** is an open‑source Python library for constructing [C2PA](https://c2pa.org/) Content Credentials manifests that validate with [`c2patool`](https://github.com/contentauth/c2pa-rs) and other common C2PA consumers. 
 
-The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPG and PDF files. 
+The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPG/JPEG and PDF files. 
 
-🔸 **Supported file extensions**: `JPG`, `PDF`
+🔸 **Supported file extensions**: `JPG`, `JPEG`, `PDF`
 
 🔸 **Supported Python versions**: `3.9.2 - 3.14.0`
 
 🔸 **C2PA Spec Version**: `1.4`
 
-For more detailed feature specification, please look at the [Features](#-features) section.
+For more detailed feature specificatio, please look at the [Features](#-features) section.
+
+
 > [!WARNING]
-> This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly.
+> This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly. 
+> 
+> For more information on generating certificates and keys for file signing proceed to the [Certificates](#-certificates) section.
 
 ## Table of Contents
 + [🥧 Quick start](#-quick-start)
@@ -47,7 +51,7 @@ For more detailed feature specification, please look at the [Features](#-feature
   + [Lint \& format](#lint--format)
 + [🥧 Features](#-features)
   + [Workflow of test applications](#workflow-of-test-applications)
-  + [Notes for PDF vs JPG](#notes-for-pdf-vs-jpg)
+  + [Notes for PDF vs JPG/JPEG](#notes-for-pdf-vs-jpgjpeg)
 + [🥧 Certificates](#-certificates)
   + [Generating your own mock credentials](#generating-your-own-mock-credentials)
   + [Getting credentials for production](#getting-credentials-for-production)
@@ -120,6 +124,8 @@ docker compose up c2pie-notebooks
 After running this command you should be able to access Jupyter Lab at `localhost:8888` from your browser.
 
 The existing `notebooks` directory already contains an example notebook with commands to test signing functionality. 
+
+<br>
 
 ## Running from your own environment
 
@@ -226,7 +232,7 @@ c2patool_validation_results:
 
 #### C2PA Verify Tool
 
-You can also verify signed files on [Verify platform](https://contentcredentials.org/verify).
+You can also verify signed files using [Verify tool](https://contentcredentials.org/verify).
 
 Simply upload the file you'd like to verify.
 
@@ -246,7 +252,7 @@ Simply upload the file you'd like to verify.
 
 ## First steps
 
-To contribute to the c2pie package development, you can use one of the following approaches after cloning the repository.
+To contribute to the c2pie package development, you can use one of the following approaches **<u>after cloning the repository</u>**.
 
 ### Using Dev Containers
 1. Make sure you have installed Docker and [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) extension for VS code.
@@ -353,13 +359,13 @@ The latter option is also available via the VC Code task `Lint and Format`
 
 4) Write a new asset with C2PA.
 
-## Notes for PDF vs JPG
+## Notes for PDF vs JPG/JPEG
 
 🔸 **PDF**: we append an incremental update. The `c2pa.hash.data` exclusion starts at `len(original_pdf)` and its length equals the final tail size (computed iteratively).  
 
-🔸 **JPG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
+🔸 **JPG/JPEG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
 
-The library takes care of iterative sizing so the `c2pa.hash.data` matches exactly, otherwise validators return `assertion.dataHash.mismatch`.
+The library takes care of iterative sizing, so the `c2pa.hash.data` matches exactly, otherwise validators return `assertion.dataHash.mismatch`.
 
 <br>
 
@@ -368,7 +374,7 @@ The library takes care of iterative sizing so the `c2pa.hash.data` matches exact
 Example certificate and key are located in `tests/credentials`. 
 
 >[!WARNING]
->They are suitable for development only ⚠️
+>This repository's credentials are suitable for development only! 
 
 ## Generating your own mock credentials
 
@@ -420,6 +426,8 @@ For detailed information on signing and certificates please explore the [corresp
 ∗ [C2PA spec](https://c2pa.org/)  
 
 ∗ [c2patool for validation](https://github.com/contentauth/c2pa-rs)
+
+∗ [C2PA Verify Tool](https://contentcredentials.org/verify)
 
 <br>
 

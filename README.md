@@ -8,20 +8,28 @@
 
 [![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 ![Coverage](https://codecov.io/gh/TourmalineCore/c2pie/branch/master/graph/badge.svg)
+[![c2pa](https://img.shields.io/badge/c2pa-v1.4-seagreen.svg)](https://c2pa.org/)
+ 
 
 <br>
 
 **c2pie** is an open‑source Python library for constructing [C2PA](https://c2pa.org/) Content Credentials manifests that validate with [`c2patool`](https://github.com/contentauth/c2pa-rs) and other common C2PA consumers. 
 
-The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPG and PDF files. 
+The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPG/JPEG and PDF files. 
 
-🔸 **Supported file extensions**: `JPG`, `PDF`
+🔸 **Supported file extensions**: `JPG`, `JPEG`, `PDF`
 
 🔸 **Supported Python versions**: `3.9.2 - 3.14.0`
 
-For more detailed feature specification, please look at the [Features](#-features) section.
+🔸 **C2PA Spec Version**: `1.4`
 
-> ⚠️ This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly.
+For more detailed feature specificatio, please look at the [Features](#-features) section.
+
+
+> [!WARNING]
+> This library helps you build valid manifests, but trust decisions (anchors, allow/deny lists, TSA) are your responsibility. For production, you must provide a certificate chain anchored to an accepted trust root and configure validation policy accordingly. 
+> 
+> For more information on generating certificates and keys for file signing proceed to the [Certificates](#-certificates) section.
 
 ## Table of Contents
 + [🥧 Quick start](#-quick-start)
@@ -43,7 +51,7 @@ For more detailed feature specification, please look at the [Features](#-feature
   + [Lint \& format](#lint--format)
 + [🥧 Features](#-features)
   + [Workflow of test applications](#workflow-of-test-applications)
-  + [Notes for PDF vs JPG](#notes-for-pdf-vs-jpg)
+  + [Notes for PDF vs JPG/JPEG](#notes-for-pdf-vs-jpgjpeg)
 + [🥧 Certificates](#-certificates)
   + [Generating your own mock credentials](#generating-your-own-mock-credentials)
   + [Getting credentials for production](#getting-credentials-for-production)
@@ -58,7 +66,9 @@ For more detailed feature specification, please look at the [Features](#-feature
 ## Running example apps with Docker Compose
 
 For a quick test of c2pie's functionality with pre-prepared environment, test files and credentials, you can run our example apps.
-> ⚠️ Docker is essential for running example apps.
+
+>[!IMPORTANT]
+> Docker is essential for running example apps.
 
 Follow the steps:
 
@@ -86,9 +96,9 @@ Follow the steps:
     The result was saved to test_files/signed_test_image.jpg. 
     c2patool_validation_results:
     {
-        "active_manifest": "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9",
+        "active_manifest": "urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9",
         "manifests": {
-        "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9": {
+        "urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9": {
             "claim_generator": "c2pie",
         ................
     },
@@ -97,7 +107,7 @@ Follow the steps:
         "success": [
             {
                 "code": "claimSignature.insideValidity",
-                "url": "self#jumbf=/c2pa/urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
+                "url": "self#jumbf=/c2pa/urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
                 "explanation": "claim signature valid"
             },
         ................
@@ -114,6 +124,8 @@ docker compose up c2pie-notebooks
 After running this command you should be able to access Jupyter Lab at `localhost:8888` from your browser.
 
 The existing `notebooks` directory already contains an example notebook with commands to test signing functionality. 
+
+<br>
 
 ## Running from your own environment
 
@@ -198,9 +210,9 @@ If the file has been correctly signed and validation is successful, the results 
 ```bash
 c2patool_validation_results:
 {
-    "active_manifest": "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9",
+    "active_manifest": "urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9",
     "manifests": {
-    "urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9": {
+    "urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9": {
         "claim_generator": "c2pie",
     ................
 },
@@ -209,7 +221,7 @@ c2patool_validation_results:
     "success": [
         {
             "code": "claimSignature.insideValidity",
-            "url": "self#jumbf=/c2pa/urn:c2pa:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
+            "url": "self#jumbf=/c2pa/urn:uuid:f0ce8560b76342d1bb3085cfbe6cc5e9/c2pa.signature",
             "explanation": "claim signature valid"
         },
     ................
@@ -220,16 +232,19 @@ c2patool_validation_results:
 
 #### C2PA Verify Tool
 
-You can also verify signed files on [Verify platform](https://contentcredentials.org/verify).
+You can also verify signed files using [Verify tool](https://contentcredentials.org/verify).
 
 Simply upload the file you'd like to verify.
 
-⚠️ NOTE: Files embedded with self-signed certificates (like the ones this repository contains) **won't be verified**. You'll get the following message:
-```
-The Content Credential issuer couldn’t be recognized. This file may not come from where it claims to.
-```
-
-Please proceed to [production credentials section](#-getting-credentials-for-production) to find out about generating verifiable credentials.
+>[!IMPORTANT]
+> Files embedded with self-signed certificates (like the ones this repository contains) **won't be verified**. 
+> 
+> You'll get the following message:
+>```
+>The Content Credential issuer couldn’t be recognized. This file may not come from where it claims to.
+>```
+>
+>Please proceed to [production credentials section](#-getting-credentials-for-production) to find out about generating verifiable credentials.
 
 <br>
 
@@ -237,7 +252,7 @@ Please proceed to [production credentials section](#-getting-credentials-for-pro
 
 ## First steps
 
-To contribute to the c2pie package development, you can use one of the following approaches after cloning the repository.
+To contribute to the c2pie package development, you can use one of the following approaches **<u>after cloning the repository</u>**.
 
 ### Using Dev Containers
 1. Make sure you have installed Docker and [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) extension for VS code.
@@ -246,6 +261,7 @@ To contribute to the c2pie package development, you can use one of the following
 
 ### Using a Local Environment
 
+>[!NOTE]
 >We strongly recommend using Dev Containers in order to automatically create an isolated Python environment with all dependencies installed, environment variables exported and some helpful development tools included.
 
 
@@ -269,8 +285,8 @@ To contribute to the c2pie package development, you can use one of the following
     
     poetry run ruff check
     ```
-
-    > Commands in further sections don't include `poetry run` by default as they are intended to be run from a Dev Container. 
+>[!WARNING]
+> Commands in further sections don't include `poetry run` by default as they are intended to be run from a Dev Container. Remember to add `poetry run`.
 
 
 ## Run test applications
@@ -343,19 +359,22 @@ The latter option is also available via the VC Code task `Lint and Format`
 
 4) Write a new asset with C2PA.
 
-## Notes for PDF vs JPG
+## Notes for PDF vs JPG/JPEG
 
 🔸 **PDF**: we append an incremental update. The `c2pa.hash.data` exclusion starts at `len(original_pdf)` and its length equals the final tail size (computed iteratively).  
 
-🔸 **JPG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
+🔸 **JPG/JPEG**: we insert APP11 segments. The exclusion start is the APP11 insertion offset; the length is the final APP11 payload length (also computed iteratively).
 
-The library takes care of iterative sizing so the `c2pa.hash.data` matches exactly, otherwise validators return `assertion.dataHash.mismatch`.
+The library takes care of iterative sizing, so the `c2pa.hash.data` matches exactly, otherwise validators return `assertion.dataHash.mismatch`.
 
 <br>
 
 # 🥧 Certificates
 
-Example certificate and key are located in `tests/credentials`. They are suitable for development only ⚠️
+Example certificate and key are located in `tests/credentials`. 
+
+>[!WARNING]
+>This repository's credentials are suitable for development only! 
 
 ## Generating your own mock credentials
 
@@ -380,11 +399,13 @@ You can generate your own mock credentials for testing and developing the packag
     -signkey  credentials/<private-key-filename>.pem \
     -out credentials/<certificate-filename>.pem
     ```
-> ⚠️ Remember to update environment variables to use your newly generated credentials.
+>[!IMPORTANT]
+> Remember to update environment variables to use your newly generated credentials.
 
+>[!NOTE]
 > You can change certificate's validity period with --days option at the last step.
-
-> Certificate Signing Request file (*csr.pem*) can be deleted after the certificate has been generated.
+>
+>Certificate Signing Request file (*csr.pem*) can be deleted after the certificate has been generated.
 
 
 ## Getting credentials for production
@@ -405,6 +426,8 @@ For detailed information on signing and certificates please explore the [corresp
 ∗ [C2PA spec](https://c2pa.org/)  
 
 ∗ [c2patool for validation](https://github.com/contentauth/c2pa-rs)
+
+∗ [C2PA Verify Tool](https://contentcredentials.org/verify)
 
 <br>
 

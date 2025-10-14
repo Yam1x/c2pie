@@ -23,7 +23,7 @@ class Claim(SuperBox):
         self,
         assertion_store: AssertionStore,
         claim_generator: str = "c2pie",
-        manifest_label: str = f"urn:c2pa:{uuid.uuid4().hex}",
+        manifest_label: str = f"urn:uuid:{uuid.uuid4().hex}",
         dc_format: str = None,
     ):
         self.claim_generator = claim_generator

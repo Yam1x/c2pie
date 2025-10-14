@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "c2pie"
-version = "0.2.0"
+version = "0.1.0-alpha.1"
 
 [[tool.poetry.source]]
 name = "PyPI"
@@ -49,6 +49,9 @@ pytest = "^7.4.0"
 pytest-cov = "^7.0.0"
 ruff = "^0.13.2"
 
+[tool.poetry.group.semantic-release.dependencies]
+python-semantic-release = "^10.4.1"
+
 [build-system]
 requires = ["poetry>=1.8.3"]
 build-backend = "poetry.masonry.api"
@@ -66,3 +69,31 @@ omit = [
 
 [tool.coverage.report]
 show_missing = true
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:tool.poetry.version"]
+build_command = "poetry build"
+allow_zero_version = true
+commit_parser = "conventional"
+
+[tool.semantic_release.commit_parser_options]
+minor_tags = ["feat"]
+patch_tags = ["fix"]
+parse_squash_commits = true
+ignore_merge_commits = true
+
+[tool.semantic_release.changelog]
+exclude_commit_patterns = [
+    '''chore(?:\([^)]*?\))?: .+''',
+    '''ci(?:\([^)]*?\))?: .+''',
+    '''refactor(?:\([^)]*?\))?: .+''',
+    '''style(?:\([^)]*?\))?: .+''',
+    '''test(?:\([^)]*?\))?: .+''',
+    '''build\((?!deps\): .+)''',
+    '''Initial [Cc]ommit.*''',
+]
+
+[tool.semantic_release.branches.alpha]
+match = "^(feature|fix)/.+"
+prerelease = true
+prerelease_token = "alpha"

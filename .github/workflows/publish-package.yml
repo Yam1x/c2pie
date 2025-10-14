@@ -16,6 +16,7 @@ jobs:
   linting-and-testing:
     name: Linting and Testing
     uses: ./.github/workflows/lint-and-test.yml
+
   release-build:
     name: Build and Publish Package
     if: startsWith(github.event.ref, 'refs/tags/v')

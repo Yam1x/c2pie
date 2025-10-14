@@ -244,6 +244,7 @@ jobs:
           path: coverage-combined.json
         
   update-coverage:
+    name: Update Coverage
     runs-on: ubuntu-latest
     needs: [combine-coverage]
     permissions:
@@ -255,8 +256,15 @@ jobs:
       
       - name: Download jq
         run: |
-          apt install jq
+          sudo apt install jq
       
+      - name: Download combined coverage
+        uses: actions/download-artifact@v5
+        with:
+          name: coverage-combined
+          path: coverage-combined.json
+        continue-on-error: true
+
       - name: Find existing and calculated test coverage scores
         run: |
           echo "EXISTING_COVERAGE=$(grep -oP '(?<=coverage-)\d+' README.md | head -n1)" >> $GITHUB_ENV

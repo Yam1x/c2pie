@@ -274,7 +274,7 @@ jobs:
           echo $EXISTING_COVERAGE
           echo $CALCULATED_COVERAGE
 
-      - name: Commit and Push Changes
+      - name: Replace badge URL in README and commit
         if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
         run: |
 
@@ -284,12 +284,27 @@ jobs:
           echo $EXISTING_COVERAGE_BADGE_URL
           echo $CALCULATED_COVERAGE_BADGE_URL
 
+          python3 - <<'PY'
+          import io, sys, os
+
+          old = os.environ.get("EXISTING_COVERAGE_BADGE_URL")
+          new = os.environ.get("CALCULATED_COVERAGE_BADGE_URL")
+          path = "README.md"
+
+          with io.open(path, "r", encoding="utf-8") as f:
+              content = f.read()
+
+          if old in content:
+              content = content.replace(old, new)
+              with io.open(path, "w", encoding="utf-8") as f:
+                  f.write(content)
+              print("Replaced coverage badge URL in README.md")
+          else:
+              print("Old URL not found in README.md, no replacement made")
+          PY
+
           git config --global user.name github-actions[bot]
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
-
-          old=$(printf '%s\n' "$EXISTING_COVERAGE_BADGE_URL" | sed 's/[.[\*^$/]/\\&/g')
-          new=$CALCULATED_COVERAGE_BADGE_URL
-          sed -i -e "s|$old|$new|g" README.md
 
           git add README.md
 

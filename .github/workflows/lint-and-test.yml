@@ -264,6 +264,7 @@ jobs:
           name: coverage-combined
           path: coverage-combined
 
+        # Find existing score and color by line matching in README and get calculated coverage from json file
       - name: Find existing and calculated test coverage scores and existing color
         run: |
           echo "EXISTING_COVERAGE=$(grep -oP '(?<=coverage-)\d+' README.md | head -n1)" >> "$GITHUB_ENV"
@@ -276,6 +277,8 @@ jobs:
           echo $CALCULATED_COVERAGE
           echo $EXISTING_BADGE_COLOR
 
+        # 0-60: red; 60-70: orange; 70-80: yellow; 80-90: yellowish green; 90-100: green
+        # set new color and then add its variable to workflow's environment
       - name: Define new badge color 
         if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
         run: |
@@ -301,6 +304,8 @@ jobs:
               f.write(f"NEW_BADGE_COLOR={new_badge_color}")
           PY
 
+        # Find existing badge url in README assuming that it looks like we expect (must be perfect match)
+        # Replace it with calculated url, where score and color are new
       - name: Replace badge URL in README
         if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
         run: |

@@ -282,15 +282,17 @@ jobs:
           python3 - <<'PY'
           import os
 
-          if os.getenv("CALCULATED_COVERAGE") < 60:
+          new_coverage = int(os.getenv("CALCULATED_COVERAGE"))
+
+          if new_coverage < 60:
             new_badge_color = "crimson"
-          elif 60 <= os.getenv("CALCULATED_COVERAGE") < 70:
+          elif 60 <= new_coverage < 70:
             new_badge_color = "orange"
-          elif 70 <= os.getenv("CALCULATED_COVERAGE") < 80:
+          elif 70 <= new_coverage < 80:
             new_badge_color = "yellow"
-          elif 80 <= os.getenv("CALCULATED_COVERAGE") < 90:
+          elif 80 <= new_coverage < 90:
             new_badge_color = "olivedrab"
-          elif os.getenv("CALCULATED_COVERAGE") >= 90:
+          elif new_coverage >= 90:
             new_badge_color = "forestgreen"
 
           env_file = os.getenv('GITHUB_ENV')

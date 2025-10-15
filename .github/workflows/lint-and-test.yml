@@ -301,7 +301,7 @@ jobs:
               f.write(f"NEW_BADGE_COLOR={new_badge_color}")
           PY
 
-      - name: Replace badge URL in README and commit changes
+      - name: Replace badge URL in README
         if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
         run: |
 
@@ -332,7 +332,10 @@ jobs:
           else:
               print("Old URL not found in README.md, no replacement made")
           PY
-          
+
+      - name: Commit README changes
+        if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
+        run: |
           git config --global user.name github-actions[bot]
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
 

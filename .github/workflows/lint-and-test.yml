@@ -291,6 +291,9 @@ jobs:
           new = os.environ.get("CALCULATED_COVERAGE_BADGE_URL")
           path = "README.md"
 
+          print(old)
+          print(new)
+          
           with io.open(path, "r", encoding="utf-8") as f:
               content = f.read()
 

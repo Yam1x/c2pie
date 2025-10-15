@@ -264,22 +264,47 @@ jobs:
           name: coverage-combined
           path: coverage-combined
 
-      - name: Find existing and calculated test coverage scores
+      - name: Find existing and calculated test coverage scores and existing color
         run: |
           echo "EXISTING_COVERAGE=$(grep -oP '(?<=coverage-)\d+' README.md | head -n1)" >> "$GITHUB_ENV"
+          echo "EXISTING_BADGE_COLOR=$(grep -oP '(?<=badge/coverage-[0-9]+%25-)[^?]+' README.md | head -n1)" >> "$GITHUB_ENV"
           echo "CALCULATED_COVERAGE=$(jq -r .totals.percent_covered_display coverage-combined/coverage-combined.json)" >> "$GITHUB_ENV"
       
-      - name: Debug
+      - name: Check found coverage scores and color
         run: |
           echo $EXISTING_COVERAGE
           echo $CALCULATED_COVERAGE
+          echo $EXISTING_BADGE_COLOR
+
+      - name: Define new badge color 
+        if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
+        run: |
+          python3 - <<'PY'
+          import os
+
+          if os.getenv("CALCULATED_COVERAGE") < 60:
+            new_badge_color = "crimson"
+          elif 60 <= os.getenv("CALCULATED_COVERAGE") < 70:
+            new_badge_color = "orange"
+          elif 70 <= os.getenv("CALCULATED_COVERAGE") < 80:
+            new_badge_color = "yellow"
+          elif 80 <= os.getenv("CALCULATED_COVERAGE") < 90:
+            new_badge_color = "olivedrab"
+          elif os.getenv("CALCULATED_COVERAGE") >= 90:
+            new_badge_color = "forestgreen"
+
+          env_file = os.getenv('GITHUB_ENV')
+
+          with open(env_file, "a") as f:
+              f.write(f"NEW_BADGE_COLOR={new_badge_color}")
+          PY
 
       - name: Replace badge URL in README and commit changes
         if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
         run: |
 
-          export EXISTING_COVERAGE_BADGE_URL="https://img.shields.io/badge/coverage-$EXISTING_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c"
-          export CALCULATED_COVERAGE_BADGE_URL="https://img.shields.io/badge/coverage-$CALCULATED_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c"
+          export EXISTING_COVERAGE_BADGE_URL="https://img.shields.io/badge/coverage-$EXISTING_COVERAGE%25-$EXISTING_BADGE_COLOR?logo=codecov&logoColor=ff9d1c"
+          export CALCULATED_COVERAGE_BADGE_URL="https://img.shields.io/badge/coverage-$CALCULATED_COVERAGE%25-$NEW_BADGE_COLOR?logo=codecov&logoColor=ff9d1c"
 
           echo $EXISTING_COVERAGE_BADGE_URL
           echo $CALCULATED_COVERAGE_BADGE_URL
@@ -287,18 +312,18 @@ jobs:
           python3 - <<'PY'
           import io, sys, os
 
-          old = os.environ.get("EXISTING_COVERAGE_BADGE_URL")
-          new = os.environ.get("CALCULATED_COVERAGE_BADGE_URL")
+          old_badge_url = os.getenv("EXISTING_COVERAGE_BADGE_URL")
+          new_badge_url = os.getenv("CALCULATED_COVERAGE_BADGE_URL")
           path = "README.md"
 
-          if not old or not new:
+          if not old_badge_url or not new_badge_url:
             sys.exit("Either existing or calculated badge URL doesn't exist")
           
           with io.open(path, "r", encoding="utf-8") as f:
             content = f.read()
 
-          if old in content:
-              content = content.replace(old, new)
+          if old_badge_url in content:
+              content = content.replace(old_badge_url, new_badge_url)
               with io.open(path, "w", encoding="utf-8") as f:
                   f.write(content)
               print("Replaced coverage badge URL in README.md")

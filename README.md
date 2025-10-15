@@ -8,7 +8,7 @@
 
 [![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 [![c2pa](https://img.shields.io/badge/c2pa-v1.4-seagreen.svg)](https://c2pa.org/)
- [![coverage](https://img.shields.io/badge/coverage-92%25-green?logo=codecov&logoColor=ff9d1c)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
+ [![coverage](https://img.shields.io/badge/coverage-50%25-green?logo=codecov&logoColor=ff9d1c)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 
 <br>
 

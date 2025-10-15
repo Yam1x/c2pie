@@ -278,8 +278,8 @@ jobs:
         if: ${{ env.EXISTING_COVERAGE != env.CALCULATED_COVERAGE }} 
         run: |
 
-          export EXISTING_COVERAGE_BADGE_URL="https://img.shields.io/badge/coverage-$EXISTING_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c"
-          export CALCULATED_COVERAGE_BADGE_URL="https://img.shields.io/badge/coverage-$CALCULATED_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c"
+          EXISTING_COVERAGE_BADGE_URL="https://img.shields.io/badge/coverage-$EXISTING_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c"
+          CALCULATED_COVERAGE_BADGE_URL="https://img.shields.io/badge/coverage-$CALCULATED_COVERAGE%25-green?logo=codecov&logoColor=ff9d1c"
 
           echo $EXISTING_COVERAGE_BADGE_URL
           echo $CALCULATED_COVERAGE_BADGE_URL
@@ -287,7 +287,9 @@ jobs:
           git config --global user.name github-actions[bot]
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
 
-          sed -i -e "s|$EXISTING_COVERAGE_BADGE_URL|$CALCULATED_COVERAGE_BADGE_URL|g" README.md
+          old=$(printf '%s\n' "$EXISTING_COVERAGE_BADGE_URL" | sed 's/[.[\*^$/]/\\&/g')
+          new=$CALCULATED_COVERAGE_BADGE_URL
+          sed -i -e "s|$old|$new|g" README.md
 
           git add README.md
 

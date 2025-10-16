@@ -95,7 +95,7 @@ exclude_commit_patterns = [
     '''build\((?!deps\): .+)''',
     '''Initial [Cc]ommit.*''',
     '''.*tweaks.*''',
-    '''^[^:]+\(workflows\):.*''',
+    '''^[^:]+\(semantic-release\):.*''',
     '''docs(readme): bring test coverage up to date''', 
 ]
 

@@ -184,7 +184,7 @@ jobs:
           path: .coverage
         
   combine-coverage:
-    name: Combine coverage and upload it
+    name: Combine and upload coverage
     needs: [run-unit-tests, run-e2e-tests]
     if: always()
     runs-on: ubuntu-latest

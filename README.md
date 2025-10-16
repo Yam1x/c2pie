@@ -1,7 +1,7 @@
 <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/TourmalineCore/c2pie/blob/c94d235b7ba88c82af9ece0eae5d8883f3ff1488/docs/images/c2pie-logo-for-dark-mode.svg"> 
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/TourmalineCore/c2pie/blob/c94d235b7ba88c82af9ece0eae5d8883f3ff1488/docs/images/c2pie-logo-for-light-mode.svg">
-    <img xsalt="с2pie Logo" src="https://github.com/TourmalineCore/c2pie/blob/c94d235b7ba88c82af9ece0eae5d8883f3ff1488/docs/images/c2pie-logo-for-light-mode.svg" style="width: 50%;">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-dark-mode.svg"> 
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-light-mode.svg">
+    <img xsalt="с2pie Logo" src="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-light-mode.svg" style="width: 50%;">
 </picture>
 
 -------

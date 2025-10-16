@@ -9,7 +9,7 @@
 [![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 [![c2pa](https://img.shields.io/badge/c2pa-v1.4-seagreen.svg)](https://c2pa.org/)
 [![coverage](https://img.shields.io/badge/coverage-92%25-forestgreen?logo=codecov&logoColor=ff9d1c)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
-[![pypi version](https://img.shields.io/pypi/v/c2pie&colorB=ff9d1c)](https://pypi.org/project/c2pie/)
+[![pypi version](https://img.shields.io/pypi/v/c2pie?colorB=ff9d1c)](https://pypi.org/project/c2pie/)
 
 <br>
 

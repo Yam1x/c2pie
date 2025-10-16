@@ -6,7 +6,7 @@ on:
       - '**.md'
       - 'docs/**'
     tags-ignore:
-      - 'v**'
+      - v*
   workflow_call:
 
 permissions:

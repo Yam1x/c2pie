@@ -95,6 +95,7 @@ exclude_commit_patterns = [
     '''build\((?!deps\): .+)''',
     '''Initial [Cc]ommit.*''',
     '''.*tweaks.*''',
+    '''.*(workflows):.*''',
 ]
 
 [tool.semantic_release.branches.alpha]

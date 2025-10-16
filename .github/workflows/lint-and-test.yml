@@ -5,7 +5,7 @@ on:
     paths-ignore:
       - '**.md'
       - 'docs/**'
-    tags:
+    tags-ignore:
       - 'v**'
   workflow_call:
 

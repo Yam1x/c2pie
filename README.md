@@ -8,7 +8,7 @@
 
 [![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 [![c2pa](https://img.shields.io/badge/c2pa-v1.4-seagreen.svg)](https://c2pa.org/)
- 
+ [![coverage](https://img.shields.io/badge/coverage-92%25-forestgreen?logo=codecov&logoColor=ff9d1c)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 
 <br>
 
@@ -22,7 +22,7 @@ The package supports building claims, assertions, and COSE signatures and embedd
 
 🔸 **C2PA Spec Version**: `1.4`
 
-For more detailed feature specificatio, please look at the [Features](#-features) section.
+For more detailed feature specification, please look at the [Features](#-features) section.
 
 
 > [!WARNING]

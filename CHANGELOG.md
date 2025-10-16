@@ -2,14 +2,6 @@
 
 <!-- version list -->
 
-## v0.1.0-alpha.5 (2025-10-16)
-
-### Bug Fixes
-
-- **workflows**: Fix workflows still triggering on push at the same time as release
-  ([`9469203`](https://github.com/TourmalineCore/c2pie/commit/94692034e1a8c164ce53256a0d23c70ce3a4c227))
-
-
 ## v0.1.0-alpha.4 (2025-10-16)
 
 ### Bug Fixes

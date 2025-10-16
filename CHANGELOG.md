@@ -2,6 +2,107 @@
 
 <!-- version list -->
 
+## v0.1.0-alpha.4 (2025-10-16)
+
+### Bug Fixes
+
+- **workflows**: Add debug
+  ([`6c28056`](https://github.com/TourmalineCore/c2pie/commit/6c280564995d0794d321cd44a3c650e7ddd6d918))
+
+- **workflows**: Add debuging and fix option for grep
+  ([`2b3c9ef`](https://github.com/TourmalineCore/c2pie/commit/2b3c9efd799329f63c7744a4f91a12bacac8e80f))
+
+- **workflows**: Add processing url non-existence
+  ([`01a544f`](https://github.com/TourmalineCore/c2pie/commit/01a544faad87e0cdb13274f9e9d1f48e12585e38))
+
+- **workflows**: Add sudo in download jq step
+  ([`fc01ea3`](https://github.com/TourmalineCore/c2pie/commit/fc01ea3b7c4309ce3efeaa519d6140a0e6a26ae4))
+
+- **workflows**: Bring back env vars names
+  ([`15d0349`](https://github.com/TourmalineCore/c2pie/commit/15d0349ce0a6866e6a321527df084693478c5994))
+
+- **workflows**: Bring back exporting vars
+  ([`55b5418`](https://github.com/TourmalineCore/c2pie/commit/55b5418371b84abb59a06bc2191b4c3694c3841e))
+
+- **workflows**: Change way of accessing environment variables
+  ([`5b4e501`](https://github.com/TourmalineCore/c2pie/commit/5b4e5015dce34e2846232bc67f1efb52f7dad124))
+
+- **workflows**: Convert str to int
+  ([`69b1f73`](https://github.com/TourmalineCore/c2pie/commit/69b1f73948395951e7e6b54842ac2aafd1aa7ea7))
+
+- **workflows**: Correct syntax according to github actions rules
+  ([`041d51b`](https://github.com/TourmalineCore/c2pie/commit/041d51bef3f514c5bc061e382f5ac19ba5b9acd4))
+
+- **workflows**: Export variables to github_env
+  ([`ee93cfd`](https://github.com/TourmalineCore/c2pie/commit/ee93cfd7dd302a59765ca94c368eb2e1bf7bf689))
+
+- **workflows**: Fix combined coverage treated as dir
+  ([`6dc092a`](https://github.com/TourmalineCore/c2pie/commit/6dc092a257604e2ce0812adbb88785124876ef27))
+
+- **workflows**: Fix finding current color
+  ([`7a28fe8`](https://github.com/TourmalineCore/c2pie/commit/7a28fe80e5504bd4100a33b37fe2cf8c1c8e69f5))
+
+- **workflows**: Fix string replacement
+  ([`72bcdae`](https://github.com/TourmalineCore/c2pie/commit/72bcdaea479d1c9151c6d35a05f21ed7227cd529))
+
+- **workflows**: Fix workflow permissions
+  ([`cf7fb7b`](https://github.com/TourmalineCore/c2pie/commit/cf7fb7b24d86316dbfa6b76405bb41b0743a0813))
+
+- **workflows**: Remove escaping, add quotes to github env
+  ([`46a920a`](https://github.com/TourmalineCore/c2pie/commit/46a920a9f1328edc385e37e9ec1fb9551b20206e))
+
+- **workflows**: Try replacing score with a python script
+  ([`5d3bb32`](https://github.com/TourmalineCore/c2pie/commit/5d3bb3208486451d2ca3c39893ebb9e503f4ccae))
+
+- **workflows**: Use double quotes and fix sed
+  ([`2c1e8fd`](https://github.com/TourmalineCore/c2pie/commit/2c1e8fd7cb42e86368b69b1229354d2d3b4fe866))
+
+### Documentation
+
+- **readme**: Bring test coverage score up to date
+  ([`b93c02a`](https://github.com/TourmalineCore/c2pie/commit/b93c02a205e7ebadea617a338ca6f738c9f001c2))
+
+- **readme**: Bring test coverage score up to date
+  ([`fe416f7`](https://github.com/TourmalineCore/c2pie/commit/fe416f75d8e9b4f5696e9f7fe3d337f160ec7ed7))
+
+- **readme**: Bring test coverage score up to date
+  ([`abbe3d2`](https://github.com/TourmalineCore/c2pie/commit/abbe3d2a634cde0dc0551d0408934691efe6f145))
+
+- **readme**: Change links to banner
+  ([`3ce2606`](https://github.com/TourmalineCore/c2pie/commit/3ce26060905d8acc0f13dcfa241dc3b379e4c95c))
+
+- **readme**: Fix incorrect badge rendering
+  ([`95de4ec`](https://github.com/TourmalineCore/c2pie/commit/95de4ec92b3dd99fb8d9a4e1e4f0cb348048740c))
+
+- **readme**: Fix invalid linking
+  ([`6aab921`](https://github.com/TourmalineCore/c2pie/commit/6aab9216c9341e0d9fadc86eaf664769172c30a1))
+
+- **readme**: Fix not complete url
+  ([`24b768d`](https://github.com/TourmalineCore/c2pie/commit/24b768db20a749e120a5aa5cb8a2be874fecb614))
+
+- **readme**: Fix url to badge
+  ([`f263901`](https://github.com/TourmalineCore/c2pie/commit/f2639018a511c28a5255d52a7a7a953d7e41a76f))
+
+### Features
+
+- **workflows**: Add badge color replacement
+  ([`e249736`](https://github.com/TourmalineCore/c2pie/commit/e249736f15c0b3c0f8d8f3ec5510dd1ae657462a))
+
+- **workflows**: Update coverage badge dynamically
+  ([`8554847`](https://github.com/TourmalineCore/c2pie/commit/85548474f7c415b7f811081af03e7d99ea3d90f9))
+
+### Refactoring
+
+- **workflows**: Add comments to steps
+  ([`9ab3912`](https://github.com/TourmalineCore/c2pie/commit/9ab391257ef3c4b6fd2ae1b916ab7e14ec8a048b))
+
+- **workflows**: Move git operations to a separate step
+  ([`267683b`](https://github.com/TourmalineCore/c2pie/commit/267683b384dbfbd94b29a80c5ca48e16cc17d4b5))
+
+- **workflows**: Use better name for a job
+  ([`bb88ee3`](https://github.com/TourmalineCore/c2pie/commit/bb88ee33f4bb84a62366456149175636e4b8e4b5))
+
+
 ## v0.1.0-alpha.3 (2025-10-14)
 
 ### Features

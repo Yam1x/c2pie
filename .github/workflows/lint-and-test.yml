@@ -2,11 +2,13 @@ name: Linting and Testing
 
 on:
   push:
+    branches:
+      - '**'
     paths-ignore:
       - '**.md'
       - 'docs/**'
-    tags:
-      - '!v*'
+    tags-ignore:
+      - v**
   workflow_call:
 
 permissions:

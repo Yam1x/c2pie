@@ -2,25 +2,6 @@
 
 <!-- version list -->
 
-## v0.1.0-alpha.5 (2025-10-16)
-
-### Bug Fixes
-
-- **readme**: Fix not working links to banner
-  ([`96217d6`](https://github.com/TourmalineCore/c2pie/commit/96217d60dfcab0dd8f59156763766b0334c47a7f))
-
-- **semantic-release**: Ignore test coverage badge updates in changelog
-  ([`be590a2`](https://github.com/TourmalineCore/c2pie/commit/be590a28dfe8c895609aa582eb3179a66199f5df))
-
-- **semantic-release**: Not trigger workflows on push by semantic-release
-  ([`239b3c5`](https://github.com/TourmalineCore/c2pie/commit/239b3c5e83857c629ea74fb15b1604fc11073880))
-
-### Features
-
-- **semantic-release**: Exclude workflows commits from changelog
-  ([`7df9427`](https://github.com/TourmalineCore/c2pie/commit/7df9427c21bc7a2e832c71bb026f155714cdb6d1))
-
-
 ## v0.1.0-alpha.4 (2025-10-16)
 
 ### Bug Fixes

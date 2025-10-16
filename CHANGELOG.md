@@ -59,15 +59,6 @@
 
 ### Documentation
 
-- **readme**: Bring test coverage score up to date
-  ([`b93c02a`](https://github.com/TourmalineCore/c2pie/commit/b93c02a205e7ebadea617a338ca6f738c9f001c2))
-
-- **readme**: Bring test coverage score up to date
-  ([`fe416f7`](https://github.com/TourmalineCore/c2pie/commit/fe416f75d8e9b4f5696e9f7fe3d337f160ec7ed7))
-
-- **readme**: Bring test coverage score up to date
-  ([`abbe3d2`](https://github.com/TourmalineCore/c2pie/commit/abbe3d2a634cde0dc0551d0408934691efe6f145))
-
 - **readme**: Change links to banner
   ([`3ce2606`](https://github.com/TourmalineCore/c2pie/commit/3ce26060905d8acc0f13dcfa241dc3b379e4c95c))
 

@@ -96,6 +96,7 @@ exclude_commit_patterns = [
     '''Initial [Cc]ommit.*''',
     '''.*tweaks.*''',
     '''.*(workflows):.*''',
+    '''docs(readme): bring test coverage up to date''', 
 ]
 
 [tool.semantic_release.branches.alpha]

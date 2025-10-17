@@ -8,10 +8,10 @@ services:
       target: c2pie_with_jupyter
       context: ..
     volumes: 
-      - .:/example_app/
-      #TODO: change to pip install c2pie when it becomes available
-      - ../pyproject.toml:/example_app/pyproject.toml
-      - ../c2pie:/example_app/c2pie
+      - ./notebooks:/example_app/notebooks
+      - ./credentials:/example_app/credentials
+      - ./test_files:/example_app/test_files
+      - ./.example-app-env:/example_app/.example-app-env
     env_file:  "./.example-app-env"
     extra_hosts:
      - host.docker.internal:host-gateway

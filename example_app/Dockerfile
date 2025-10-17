@@ -7,23 +7,21 @@ ENV PIP_NO_CACHE_DIR=off \
 
 WORKDIR /example_app
 
+COPY ./example_app/credentials ./credentials
+COPY ./example_app/.example-app-env ./.example-app-env 
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates build-essential ssh libffi-dev libssl-dev
     
 RUN pip install "poetry>=$POETRY_VERSION"
+
+RUN poetry init --no-interaction && poetry config virtualenvs.create false && poetry add c2pie
 
 ENV RUSTUP_HOME=/home/vscode/.rustup \
     CARGO_HOME=/home/vscode/.cargo \
     PATH=/home/vscode/.cargo/bin:/home/vscode/.local/bin:$PATH
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable && \
     cargo install c2patool --locked
-
-COPY c2pie ./c2pie
-COPY example_app .
-COPY pyproject.toml poetry.lock .
-
-RUN poetry config virtualenvs.create false \
-  && poetry lock && poetry install --without dev --no-interaction --no-ansi 
 
 FROM c2pie_base AS c2pie_with_jupyter
 

@@ -17,7 +17,7 @@
 
 The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPG/JPEG and PDF files. 
 
-`Latest version: 0.1.0a5`
+`Latest stable version: 0.1.0a6`
 
 🔸 **Supported file extensions**: `JPG`, `JPEG`, `PDF`
 

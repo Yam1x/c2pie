@@ -1,11 +1,14 @@
-
 name: Linting and Testing
 
 on:
   push:
+    branches:
+      - '**'
     paths-ignore:
       - '**.md'
       - 'docs/**'
+    tags-ignore:
+      - v**
   workflow_call:
 
 permissions:
@@ -249,7 +252,6 @@ jobs:
     needs: [combine-coverage]
     permissions:
       contents: write
-      pull-requests: write
     steps:
       - name: Checkout repository 
         uses: actions/checkout@v5 

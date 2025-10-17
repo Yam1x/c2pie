@@ -1,7 +1,7 @@
 <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/c2pie-logo-for-dark-mode.svg"> 
-    <source media="(prefers-color-scheme: light)" srcset="docs/images/c2pie-logo-for-light-mode.svg">
-    <img xsalt="с2pie Logo" src="docs/images/c2pie-logo-for-light-mode.svg" style="width: 50%;">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-dark-mode.svg"> 
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-light-mode.svg">
+    <img xsalt="с2pie Logo" src="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-light-mode.svg" style="width: 50%;">
 </picture>
 
 -------
@@ -9,15 +9,13 @@
 [![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 [![c2pa](https://img.shields.io/badge/c2pa-v1.4-seagreen.svg)](https://c2pa.org/)
 [![coverage](https://img.shields.io/badge/coverage-92%25-forestgreen?logo=codecov&logoColor=ff9d1c)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
-[![latest](https://img.shields.io/pypi/v/c2pie?colorB=fc8021)](https://pypi.org/project/c2pie/)
+[![latest](https://img.shields.io/pypi/v/c2pie?label=latest&colorB=fc8021)](https://pypi.org/project/c2pie/)
 
 <br>
 
 **c2pie** is an open‑source Python library for constructing [C2PA](https://c2pa.org/) Content Credentials manifests that validate with [`c2patool`](https://github.com/contentauth/c2pa-rs) and other common C2PA consumers. 
 
 The package supports building claims, assertions, and COSE signatures and embedding the manifest store into JPG/JPEG and PDF files. 
-
-`Latest version: 0.1.0a5`
 
 🔸 **Supported file extensions**: `JPG`, `JPEG`, `PDF`
 

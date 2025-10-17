@@ -1,14 +1,15 @@
 <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/TourmalineCore/c2pie/blob/c94d235b7ba88c82af9ece0eae5d8883f3ff1488/docs/images/c2pie-logo-for-dark-mode.svg"> 
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/TourmalineCore/c2pie/blob/c94d235b7ba88c82af9ece0eae5d8883f3ff1488/docs/images/c2pie-logo-for-light-mode.svg">
-    <img xsalt="с2pie Logo" src="https://github.com/TourmalineCore/c2pie/blob/c94d235b7ba88c82af9ece0eae5d8883f3ff1488/docs/images/c2pie-logo-for-light-mode.svg" style="width: 50%;">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-dark-mode.svg"> 
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-light-mode.svg">
+    <img xsalt="с2pie Logo" src="https://raw.githubusercontent.com/TourmalineCore/c2pie/refs/heads/master/docs/images/c2pie-logo-for-light-mode.svg" style="width: 50%;">
 </picture>
 
 -------
 
 [![CI](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
 [![c2pa](https://img.shields.io/badge/c2pa-v1.4-seagreen.svg)](https://c2pa.org/)
- 
+[![coverage](https://img.shields.io/badge/coverage-92%25-forestgreen?logo=codecov&logoColor=ff9d1c)](https://github.com/TourmalineCore/c2pie/actions/workflows/lint-and-test.yml)
+[![latest](https://img.shields.io/pypi/v/c2pie?label=latest&colorB=fc8021)](https://pypi.org/project/c2pie/)
 
 <br>
 
@@ -22,7 +23,7 @@ The package supports building claims, assertions, and COSE signatures and embedd
 
 🔸 **C2PA Spec Version**: `1.4`
 
-For more detailed feature specificatio, please look at the [Features](#-features) section.
+For more detailed feature specification, please look at the [Features](#-features) section.
 
 
 > [!WARNING]

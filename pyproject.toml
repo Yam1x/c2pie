@@ -75,6 +75,8 @@ show_missing = true
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:tool.poetry.version"]
+version_source = "tag"
+tag_format = "{version}.+{prerelease}"
 build_command = "poetry build"
 allow_zero_version = true
 commit_parser = "conventional"
@@ -104,3 +106,8 @@ exclude_commit_patterns = [
 match = "^(feature|fix|docs)/.+"
 prerelease = true
 prerelease_token = "alpha"
+
+[tool.semantic_release.branches.dev]
+match = "dev"
+prerelease = true
+prerelease_token = "rc"

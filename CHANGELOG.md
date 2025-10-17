@@ -2,6 +2,27 @@
 
 <!-- version list -->
 
+## v0.1.0-alpha.6 (2025-10-17)
+
+### Bug Fixes
+
+- **example-app**: Switch to installing c2pie as a pypi package
+  ([`aff1f38`](https://github.com/TourmalineCore/c2pie/commit/aff1f38e93549ca09ae9529af529c1d2eb5c27a6))
+
+### Documentation
+
+- **readme**: Add latest version mentioning
+  ([`d78cd45`](https://github.com/TourmalineCore/c2pie/commit/d78cd45d77379e951dea7465e8c2bf5ea8ca1430))
+
+### Features
+
+- **semantic-release**: Try to exclude semantic-release commits from changelog
+  ([`ebf5a54`](https://github.com/TourmalineCore/c2pie/commit/ebf5a549ee63480af4f619edaa88fefa088ad308))
+
+- **semantic-release**: Try to exclude workflows commits from changelog
+  ([`7f196fb`](https://github.com/TourmalineCore/c2pie/commit/7f196fb51654c7115ca0260ffa791d6e675c5b75))
+
+
 ## v0.1.0-alpha.5 (2025-10-16)
 
 ### Bug Fixes

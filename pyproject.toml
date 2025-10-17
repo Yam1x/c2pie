@@ -87,7 +87,7 @@ version = os.getenv('nextRelease_version');
 if not any(x in version for x in ['b', 'rc']):
   readme = pathlib.Path('README.md');
   text = readme.read_text();
-  text = re.sub(r'^Latest version: .*', f'Latest version: {version}', text, flags=re.M);
+  text = re.sub(r'Latest version: .*', f'Latest version: {version}', text, flags=re.M);
   readme.write_text(text)"
 """
 

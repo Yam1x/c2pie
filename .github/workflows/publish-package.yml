@@ -15,8 +15,6 @@ concurrency:
 jobs:
   release-build:
     name: Build package
-    needs: linting-and-testing
-
     runs-on: ubuntu-latest
     timeout-minutes: 30
 

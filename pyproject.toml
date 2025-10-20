@@ -105,7 +105,7 @@ match = "master"
 prerelease = false
 
 [tool.semantic_release.branches.prereleases]
-match = "^(release|feature|fix)/.+"
+match = "^(release)/.+"
 prerelease = true
 prerelease_token = "rc"
 

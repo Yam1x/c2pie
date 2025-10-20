@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "c2pie"
-version = "0.1.0"
+version = "0.1.0-rc.1+alpha.1020"
 
 [[tool.poetry.source]]
 name = "PyPI"
@@ -104,8 +104,8 @@ exclude_commit_patterns = [
 match = "master"
 prerelease = false
 
-[tool.semantic_release.branches.releases]
-match = "^(release)/.+"
+[tool.semantic_release.branches.prereleases]
+match = "^(release|feature|fix)/.+"
 prerelease = true
 prerelease_token = "rc"
 

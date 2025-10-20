@@ -2,6 +2,17 @@
 
 <!-- version list -->
 
+## v0.1.0-rc.1+alpha.1020 (2025-10-20)
+
+### Documentation
+
+- **readme**: Change latest version reference
+  ([`6409e05`](https://github.com/TourmalineCore/c2pie/commit/6409e05957922b98883326c6d8c78af0f8b1346e))
+
+- **readme**: Remove note of package version in descr, change badge label
+  ([`a6efaf9`](https://github.com/TourmalineCore/c2pie/commit/a6efaf9f35ce21db4b041d97fd3fca8ad6d8445b))
+
+
 ## v0.1.0-alpha.6 (2025-10-17)
 
 ### Bug Fixes

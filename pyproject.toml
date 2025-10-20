@@ -100,12 +100,12 @@ exclude_commit_patterns = [
     '''docs(readme): bring test coverage up to date''', 
 ]
 
-[tool.semantic_release.branches.alpha]
-match = "^(feature|fix|docs)/.+"
-prerelease = true
-prerelease_token = "alpha"
+[tool.semantic_release.branches.master]
+match = "master"
+prerelease = false
 
-[tool.semantic_release.branches.dev]
-match = "dev"
+[tool.semantic_release.branches.releases]
+match = "^(release)/.+"
 prerelease = true
 prerelease_token = "rc"
+

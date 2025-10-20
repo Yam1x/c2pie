@@ -85,6 +85,7 @@ minor_tags = ["feat"]
 patch_tags = ["fix", "docs"]
 parse_squash_commits = true
 ignore_merge_commits = true
+allowed_tags = ['feat', 'fix', 'build', 'chore', 'ci', 'docs', 'style', 'refactor', 'test', 'config']
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = [

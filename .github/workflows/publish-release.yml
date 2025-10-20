@@ -1,13 +1,13 @@
-name: Publish Release 
+name: Create and Publish Release 
 
 on:
   push:
     branches:
       - master
-      - release/*
+      - release/**
   create:
     branches:
-      - release/*
+      - release/**
  
 permissions:
   contents: read
@@ -16,8 +16,12 @@ jobs:
   linting-and-testing:
     name: Linting and Testing
     uses: ./.github/workflows/lint-and-test.yml
+    permissions:
+      contents: write
+      packages: read
 
   release:
+    needs: linting-and-testing
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-release-${{ github.ref_name }}

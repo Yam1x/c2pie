@@ -50,6 +50,16 @@
                 "kind": "build",
                 "isDefault": false
             }
-        }
+        },
+        {
+            "label": "Check release before committing and publishing",
+            "type": "shell",
+            "command": "poetry install --no-interaction --no-ansi > /dev/null && poetry run semantic-release -vv version --no-commit --no-tag --no-push --no-vcs-release",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }
+        },
     ]
 }

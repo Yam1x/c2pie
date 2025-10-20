@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     
 RUN pip install "poetry>=$POETRY_VERSION"
 
-RUN poetry init --no-interaction && poetry config virtualenvs.create false && poetry add c2pie
+RUN export $(cat .example-app-env | xargs) && poetry init --no-interaction && poetry config virtualenvs.create false && poetry add "c2pie==$C2PIE_PACKAGE_VERSION"
+
 
 ENV RUSTUP_HOME=/home/vscode/.rustup \
     CARGO_HOME=/home/vscode/.cargo \

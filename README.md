@@ -79,6 +79,9 @@ Follow the steps:
     cd example_app
     ```
 
+>[!NOTE]
+>By default, example apps use the latest available stable c2pie version. If you'd like to test some particular version, you can change the value of `C2PIE_PACKAGE_VERSION` in `example_app/.example-app-env`. 
+
 3. To test signing a JPG file, run:
     ```bash
     docker compose up c2pie-test-signing-jpg

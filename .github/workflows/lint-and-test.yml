@@ -60,7 +60,7 @@ jobs:
         run: poetry run ruff check --output-format=github .
 
   run-unit-tests:
-    name: Run unit tests using matrix
+    name: Run unit tests
     needs: ruff
     strategy: 
       fail-fast: false

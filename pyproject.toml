@@ -85,6 +85,7 @@ minor_tags = ["feat"]
 patch_tags = ["fix", "docs"]
 parse_squash_commits = true
 ignore_merge_commits = true
+allowed_tags = ['feat', 'fix', 'build', 'chore', 'ci', 'docs', 'style', 'refactor', 'test', 'config']
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = [
@@ -100,7 +101,12 @@ exclude_commit_patterns = [
     '''docs(readme): bring test coverage up to date''', 
 ]
 
-[tool.semantic_release.branches.alpha]
-match = "^(feature|fix|docs)/.+"
+[tool.semantic_release.branches.master]
+match = "master"
+prerelease = false
+
+[tool.semantic_release.branches.prereleases]
+match = "^(release)/.+"
 prerelease = true
-prerelease_token = "alpha"
+prerelease_token = "rc"
+

@@ -13,10 +13,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  linting-and-testing:
-    name: Linting and Testing
-    uses: ./.github/workflows/lint-and-test.yml
-
   release-build:
     name: Build package
     needs: linting-and-testing

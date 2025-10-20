@@ -1,14 +1,23 @@
-name: Continuous Delivery
+name: Publish Release 
 
 on:
   push:
     branches:
-      - main
+      - master
+      - release/*
+  create:
+    branches:
+      - release/*
+    
 
 permissions:
   contents: read
 
 jobs:
+  linting-and-testing:
+    name: Linting and Testing
+    uses: ./.github/workflows/lint-and-test.yml
+
   release:
     runs-on: ubuntu-latest
     concurrency:

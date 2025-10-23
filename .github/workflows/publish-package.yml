@@ -2,14 +2,6 @@ name: Package Publishing
 
 on:
   release:
-    types: 
-      - published
-      - unpublished
-      - created
-      - edited
-      - deleted
-      - prereleased
-      - released
 
 permissions:
   contents: write

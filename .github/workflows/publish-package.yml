@@ -3,8 +3,12 @@ name: Package Publishing
 on:
   release:
     types: 
-      - created
       - published
+      - unpublished
+      - created
+      - edited
+      - deleted
+      - prereleased
       - released
 
 permissions:

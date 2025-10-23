@@ -4,6 +4,10 @@
 
 ## v0.1.0 (2025-10-23)
 
+- Initial Release
+
+## v0.1.0 (2025-10-23)
+
 ### Documentation
 
 - **readme**: Add note on c2pie version

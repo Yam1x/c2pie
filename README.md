@@ -12,7 +12,7 @@
 [![latest](https://img.shields.io/pypi/v/c2pie?label=latest&colorB=fc8021)](https://pypi.org/project/c2pie/)
 
 <br>
-
+ 
 `c2pie` is an open‑source Python library for constructing [C2PA](https://c2pa.org/) Content Credentials manifests that validate with [`c2patool`](https://github.com/contentauth/c2pa-rs) and other common C2PA consumers.
 
 As far as we know, c2pie is **the world's first Python package** to implement signing PDF files according to the C2PA Standard.
